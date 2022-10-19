@@ -125,3 +125,23 @@ func (v Vec[T]) RoundI() Vec[int] {
 		panic("Can only round a float")
 	}
 }
+func (v Vec[T]) Magnitude() float32 { // expand type
+	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")
+	result := float32(v[0] * v[0])
+	for _, e := range v[1:] {
+		result += float32(e * e)
+	}
+	return Sqrt(result)
+}
+func (v Vec[T]) Normalize() Vec[float32] { // expand type
+	magRec := 1. / v.Magnitude()
+	result := make(Vec[float32], len(v)) // with 0 len?
+	for i, e := range v {
+		result[i] = float32(e) * magRec
+	}
+	return result
+}
+func (v Vec[T]) Rotate90() Vec[T] {
+	PanicIf(len(v) != 2, "Rotate90 requires exactly len 2")
+	return Vec[T]{-v[1], v[0]}
+}
