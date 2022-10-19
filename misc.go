@@ -23,6 +23,16 @@ type Number interface {
 	Int | Float
 }
 
+func PanicErr(desc string, err error) {
+	if err != nil {
+		log.Panic(desc, err)
+	}
+}
+func PanicIf(b bool, desc string) {
+	if b {
+		log.Panic(desc)
+	}
+}
 func FatalErr(desc string, err error) {
 	if err != nil {
 		log.Fatal(desc, err)
@@ -48,9 +58,7 @@ type Pair[T, U any] struct {
 }
 
 func Zip[T, U any](ts []T, us []U) []Pair[T, U] {
-	if len(ts) != len(us) {
-		panic(fmt.Sprintf("Can't zip slices of different length (%v vs %v)", len(ts), len(us)))
-	}
+	PanicIf(len(ts) != len(us), fmt.Sprintf("Can't zip slices of different length (%v vs %v)", len(ts), len(us)))
 	pairs := make([]Pair[T, U], len(ts))
 	for i := 0; i < len(ts); i++ {
 		pairs[i] = Pair[T, U]{ts[i], us[i]}
