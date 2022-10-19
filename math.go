@@ -60,6 +60,12 @@ func Sqrt[T Float](value T) T {
 func Pow[T Float](base, exp T) T {
 	return T(math.Pow(float64(base), float64(exp)))
 }
+func Cos[T Float](value T) T {
+	return T(math.Cos(float64(value)))
+}
+func Sin[T Float](value T) T {
+	return T(math.Sin(float64(value)))
+}
 
 func WithSign[T Number](signFrom, magFrom T) T {
 	if signFrom < 0 {
