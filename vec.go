@@ -7,10 +7,10 @@ func (v Vec[T]) Copy() Vec[T] {
 	copy(result, v)
 	return result
 }
-func (v Vec[T]) Float32(other T) Vec[float32] {
+func (v Vec[T]) Float32() Vec[float32] {
 	return MapF(v, func(v T) float32 { return float32(v) })
 }
-func (v Vec[T]) Int(other T) Vec[int] {
+func (v Vec[T]) Int() Vec[int] {
 	return MapF(v, func(v T) int { return int(v) })
 }
 func (v Vec[T]) Add1(other T) Vec[T] {
