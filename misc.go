@@ -98,3 +98,10 @@ func AToI[T Int](value string) (T, error) {
 	i, err := strconv.Atoi(value)
 	return T(i), err
 }
+func Make2[T any](a, b int) [][]T {
+	result := make([][]T, a)
+	for i := range result {
+		result[i] = make([]T, b)
+	}
+	return result
+}
