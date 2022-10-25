@@ -10,8 +10,14 @@ func (v Vec[T]) Copy() Vec[T] {
 func (v Vec[T]) Float32() Vec[float32] {
 	return MapF(v, func(v T) float32 { return float32(v) })
 }
+func VecsToFloat32s[T Number](v []Vec[T]) []Vec[float32] {
+	return MapF(v, func(v Vec[T]) Vec[float32] { return v.Float32() })
+}
 func (v Vec[T]) Int() Vec[int] {
 	return MapF(v, func(v T) int { return int(v) })
+}
+func VecsToInts[T Number](v []Vec[T]) []Vec[int] {
+	return MapF(v, func(v Vec[T]) Vec[int] { return v.Int() })
 }
 func (v Vec[T]) Add1(other T) Vec[T] {
 	return MapF(v, func(v T) T { return v + other })
