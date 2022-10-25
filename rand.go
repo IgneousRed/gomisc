@@ -75,8 +75,8 @@ func (s *MCG32) Range(n uint32) uint32 {
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *MCG32) RangeI(n uint32) int {
-	return int(s.Next() % n)
+func (s *MCG32) RangeI(n int) int {
+	return int(s.Next() % uint32(n))
 }
 
 // Generates number in range [0,1)
@@ -117,8 +117,8 @@ func (s *PCG32Fast) Range(n uint32) uint32 {
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *PCG32Fast) RangeI(n uint32) int {
-	return int(s.Next() % n)
+func (s *PCG32Fast) RangeI(n int) int {
+	return int(s.Next() % uint32(n))
 }
 
 // Generates number in range [0,1)
@@ -159,8 +159,8 @@ func (s *PCG32) Range(n uint32) uint32 {
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *PCG32) RangeI(n uint32) int {
-	return int(s.Next() % n)
+func (s *PCG32) RangeI(n int) int {
+	return int(s.Next() % uint32(n))
 }
 
 // Generates number in range [0,1)
