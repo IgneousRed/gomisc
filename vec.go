@@ -2,6 +2,24 @@ package gomisc
 
 type Vec[T Number] []T
 
+func Vec2I(x, y int) Vec[int] {
+	return Vec[int]{x, y}
+}
+func Vec2F(x, y float32) Vec[float32] {
+	return Vec[float32]{x, y}
+}
+func Vec3I(x, y, z int) Vec[int] {
+	return Vec[int]{x, y, z}
+}
+func Vec3F(x, y, z float32) Vec[float32] {
+	return Vec[float32]{x, y, z}
+}
+func Vec4I(x, y, z, w int) Vec[int] {
+	return Vec[int]{x, y, z, w}
+}
+func Vec4F(x, y, z, w float32) Vec[float32] {
+	return Vec[float32]{x, y, z, w}
+}
 func (v Vec[T]) Copy() Vec[T] {
 	result := make(Vec[T], len(v))
 	copy(result, v)
