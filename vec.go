@@ -23,25 +23,25 @@ func (v Vec[T]) Add1(other T) Vec[T] {
 	return MapF(v, func(v T) T { return v + other })
 }
 func (v Vec[T]) Add(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(v Pair[T, T]) T { return v.a + v.b })
+	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a + p.b })
 }
 func (v Vec[T]) Sub1(other T) Vec[T] {
 	return MapF(v, func(v T) T { return v - other })
 }
 func (v Vec[T]) Sub(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(v Pair[T, T]) T { return v.a - v.b })
+	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a - p.b })
 }
 func (v Vec[T]) Mul1(other T) Vec[T] {
 	return MapF(v, func(v T) T { return v * other })
 }
 func (v Vec[T]) Mul(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(v Pair[T, T]) T { return v.a * v.b })
+	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a * p.b })
 }
 func (v Vec[T]) Div1(other T) Vec[T] {
 	return MapF(v, func(v T) T { return v / other })
 }
 func (v Vec[T]) Div(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(v Pair[T, T]) T { return v.a / v.b })
+	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a / p.b })
 }
 func (v Vec[T]) Abs() Vec[T] {
 	return MapF(v, func(v T) T { return Abs(v) })
@@ -64,6 +64,9 @@ func (v Vec[T]) RoundI() Vec[int] {
 }
 func (v Vec[T]) Repeat0(len T) Vec[T] {
 	return MapF(v, func(v T) T { return Repeat0(v, len) })
+}
+func (v Vec[T]) Repeat0Vec(lens Vec[T]) Vec[T] {
+	return MapF(Zip(v, lens), func(p Pair[T, T]) T { return Repeat0(p.a, p.b) })
 }
 func (v Vec[T]) Magnitude() float32 { // expand type
 	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")
