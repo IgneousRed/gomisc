@@ -89,11 +89,11 @@ func (v Vec[T]) RoundI() Vec[int] {
 		panic("Can only round a float")
 	}
 }
-func (v Vec[T]) Repeat0(len T) Vec[T] {
-	return MapF(v, func(v T) T { return Repeat0(v, len) })
+func (v Vec[T]) Wrap(lens Vec[T]) Vec[T] {
+	return MapF(Zip(v, lens), func(p Pair[T, T]) T { return Wrap(p.a, p.b) })
 }
-func (v Vec[T]) Repeat0Vec(lens Vec[T]) Vec[T] {
-	return MapF(Zip(v, lens), func(p Pair[T, T]) T { return Repeat0(p.a, p.b) })
+func (v Vec[T]) Wrap1(len T) Vec[T] {
+	return MapF(v, func(v T) T { return Wrap(v, len) })
 }
 func (v Vec[T]) Magnitude() float32 { // expand type
 	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")

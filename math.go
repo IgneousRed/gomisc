@@ -8,7 +8,9 @@ func Abs[T Number](value T) T {
 	}
 	return value
 }
-func Repeat0[T Number](value, len T) T {
+
+// Wraps both numbers negative and len or more
+func Wrap[T Number](value, len T) T {
 	return value - T(math.Floor(float64(value)/float64(len)))*len
 }
 func Clamp[T Number](value, min, max T) T {
