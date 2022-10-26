@@ -16,7 +16,6 @@ func rot64(value uint64, n uint8) uint64 {
 type SeedGen64 struct {
 	result  uint64
 	hashNum uint64
-	rotNum  uint8
 }
 
 // Mix in another number
@@ -24,16 +23,15 @@ func (g SeedGen64) Mix(value uint64) SeedGen64 {
 	value ^= g.hashNum
 	g.hashNum *= 0x931e8875
 	value *= g.hashNum
-	value ^= rot64(value, g.rotNum)
-	g.rotNum = (g.rotNum + 39) % 64
+	value ^= rot64(value, 32)
 	g.result = g.result*0xca01f9dd - value*0x4973f715
-	g.result ^= rot64(g.result, g.rotNum)
+	g.result ^= rot64(g.result, 32)
 	return g
 }
 
 // Generates a seed from multiple low quality random numbers
 func SeedGen64New(value uint64) SeedGen64 {
-	return SeedGen64{0xfd258f8f3210c68, 0x43b0d7e5, 38}.Mix(value)
+	return SeedGen64{0x9e3779b97f4a7c15, 0x43b0d7e5}.Mix(value)
 }
 
 // Returns the resulting seed
@@ -49,6 +47,7 @@ func SeedGen64Auto() uint64 {
 
 type MCG32 uint64
 
+// Initializes with seed
 func MCG32New(seed uint64) MCG32 {
 	return MCG32(seed*2 + 1)
 }
@@ -61,21 +60,14 @@ func MCG32Init() MCG32 {
 // Generates a random uint32 number
 func (s *MCG32) Next() uint32 {
 	state := *s
-	*s = state * 0xa343836d
-	return uint32(state)
+	*s = state * 0xf13283ad
+	return uint32(state >> 32)
 }
 
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *MCG32) Range(n uint32) uint32 {
-	return s.Next() % n
-}
-
-// Generates number in range [0,n)
-// The larger the n the larger the bias (in general)
-// Usualy in practice it is insignificant
-func (s *MCG32) RangeI(n int) int {
+func (s *MCG32) Range(n int) int {
 	return int(s.Next() % uint32(n))
 }
 
@@ -91,6 +83,7 @@ func (s *MCG32) Exclusive01F64() float64 {
 
 type PCG32Fast uint64
 
+// Initializes with seed
 func PCG32FastNew(seed uint64) PCG32Fast {
 	return PCG32Fast(seed*2 + 1)
 }
@@ -103,21 +96,14 @@ func PCG32FastInit() PCG32Fast {
 // Generates a random uint32 number
 func (s *PCG32Fast) Next() uint32 {
 	state := *s
-	*s = state * 0xa343836d
+	*s = state * 0xf13283ad
 	return uint32((state ^ state>>22) >> (22 + state>>61))
 }
 
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *PCG32Fast) Range(n uint32) uint32 {
-	return s.Next() % n
-}
-
-// Generates number in range [0,n)
-// The larger the n the larger the bias (in general)
-// Usualy in practice it is insignificant
-func (s *PCG32Fast) RangeI(n int) int {
+func (s *PCG32Fast) Range(n int) int {
 	return int(s.Next() % uint32(n))
 }
 
@@ -133,6 +119,7 @@ func (s *PCG32Fast) Exclusive01F64() float64 {
 
 type PCG32 uint64
 
+// Initializes with seed
 func PCG32New(seed uint64) PCG32 {
 	return PCG32(seed)
 }
@@ -145,21 +132,14 @@ func PCG32Init() PCG32 {
 // Generates a random uint32 number
 func (s *PCG32) Next() uint32 {
 	state := uint64(*s)
-	*s = PCG32(state*0xa343836d + 0xfd258f8f3210c68)
+	*s = PCG32(state*0xf13283ad + 0x9e3779b97f4a7c15)
 	return rot32(uint32((state^state>>18)>>27), uint8(state>>59))
 }
 
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *PCG32) Range(n uint32) uint32 {
-	return s.Next() % n
-}
-
-// Generates number in range [0,n)
-// The larger the n the larger the bias (in general)
-// Usualy in practice it is insignificant
-func (s *PCG32) RangeI(n int) int {
+func (s *PCG32) Range(n int) int {
 	return int(s.Next() % uint32(n))
 }
 

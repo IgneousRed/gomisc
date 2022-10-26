@@ -8,6 +8,9 @@ func Abs[T Number](value T) T {
 	}
 	return value
 }
+func Repeat0[T Int](value, max T) T {
+	return value - T(math.Floor(float64(value)/float64(max)))*max
+}
 func Clamp[T Number](value, min, max T) T {
 	if value > max {
 		return max

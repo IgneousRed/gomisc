@@ -10,6 +10,9 @@ func Float64Parts(value float64) (bool, uint16, uint64) {
 	asd := math.Float64bits(value)
 	return IToB(asd >> 63), uint16((asd << 1) >> 52), asd & (math.MaxUint32 >> 12)
 }
+func Floor[T Number](value T) T {
+	return T(math.Floor(float64(value)))
+}
 func RoundI[T Float](value T) int {
 	if value < 0 {
 		return int(value - .5)
