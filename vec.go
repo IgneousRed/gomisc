@@ -62,6 +62,9 @@ func (v Vec[T]) RoundI() Vec[int] {
 		panic("Can only round a float")
 	}
 }
+func (v Vec[T]) Repeat0(len T) Vec[T] {
+	return MapF(v, func(v T) T { return Repeat0(v, len) })
+}
 func (v Vec[T]) Magnitude() float32 { // expand type
 	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")
 	result := float32(v[0] * v[0])
