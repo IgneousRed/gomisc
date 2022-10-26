@@ -20,6 +20,15 @@ func Vec4I(x, y, z, w int) Vec[int] {
 func Vec4F(x, y, z, w float32) Vec[float32] {
 	return Vec[float32]{x, y, z, w}
 }
+func (v Vec[T]) Equals(other Vec[T]) bool {
+	PanicIf(len(v) != len(other), "Trying to compare unequal sized Vecs")
+	for i, o := range other {
+		if v[i] != o {
+			return false
+		}
+	}
+	return true
+}
 func (v Vec[T]) Copy() Vec[T] {
 	result := make(Vec[T], len(v))
 	copy(result, v)
