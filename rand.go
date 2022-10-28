@@ -6,10 +6,10 @@ import (
 )
 
 func rot32(value uint32, n uint8) uint32 {
-	return value<<n | value>>(-n&31)
+	return value<<n | value>>(32-n)
 }
 func rot64(value uint64, n uint8) uint64 {
-	return value<<n | value>>(-n&63)
+	return value<<n | value>>(64-n)
 }
 
 // Generates a seed from multiple low quality random numbers
@@ -57,11 +57,15 @@ func MCG32Init() MCG32 {
 	return MCG32New(SeedGen64Auto())
 }
 
-// Generates a random uint32 number
-func (s *MCG32) Next() uint32 {
+func (s *MCG32) raw() uint64 {
 	state := *s
 	*s = state * 0xf13283ad
-	return uint32(state >> 32)
+	return uint64(state)
+}
+
+// Generates a random uint32 number
+func (s *MCG32) Next() uint32 {
+	return uint32(s.raw() >> 32)
 }
 
 // Generates number in range [0,n)
@@ -71,14 +75,14 @@ func (s *MCG32) Range(n int) int {
 	return int(s.Next() % uint32(n))
 }
 
-// Generates number in range [0,1)
-func (s *MCG32) Exclusive01F32() float32 {
-	return float32(s.Next()) / float32(1<<32)
+// Generates number in range [0,1]
+func (s *MCG32) Normal32() float32 {
+	return float32(s.raw()) / float32(1<<32-1)
 }
 
-// Generates number in range [0,1). Has 32bit resolution
-func (s *MCG32) Exclusive01F64() float64 {
-	return float64(s.Next()) / float64(1<<32)
+// Generates number in range [0,1]
+func (s *MCG32) Normal64() float64 {
+	return float64(s.raw()) / float64(1<<64-1)
 }
 
 type PCG32Fast uint64
@@ -107,14 +111,14 @@ func (s *PCG32Fast) Range(n int) int {
 	return int(s.Next() % uint32(n))
 }
 
-// Generates number in range [0,1)
-func (s *PCG32Fast) Exclusive01F32() float32 {
-	return float32(s.Next()) / float32(1<<32)
+// Generates number in range [0,1]
+func (s *PCG32Fast) Normal32() float32 {
+	return float32(s.Next()) / float32(1<<32-1)
 }
 
-// Generates number in range [0,1). Has 32bit resolution
-func (s *PCG32Fast) Exclusive01F64() float64 {
-	return float64(s.Next()) / float64(1<<32)
+// Generates number in range [0,1]. Has 32bit resolution
+func (s *PCG32Fast) Normal64() float64 {
+	return float64(s.Next()) / float64(1<<64-1)
 }
 
 type PCG32 uint64
@@ -143,12 +147,12 @@ func (s *PCG32) Range(n int) int {
 	return int(s.Next() % uint32(n))
 }
 
-// Generates number in range [0,1)
-func (s *PCG32) Exclusive01F32() float32 {
-	return float32(s.Next()) / float32(1<<32)
+// Generates number in range [0,1]
+func (s *PCG32) Normal32() float32 {
+	return float32(s.Next()) / float32(1<<32-1)
 }
 
-// Generates number in range [0,1). Has 32bit resolution
-func (s *PCG32) Exclusive01F64() float64 {
-	return float64(s.Next()) / float64(1<<32)
+// Generates number in range [0,1]. Has 32bit resolution
+func (s *PCG32) Normal64() float64 {
+	return float64(s.Next()) / float64(1<<64-1)
 }

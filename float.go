@@ -2,20 +2,51 @@ package gomisc
 
 import "math"
 
-func Float32Parts(value float32) (bool, uint8, uint32) {
-	asd := math.Float32bits(value)
-	return IToB(asd >> 31), uint8(asd >> 23), asd & (math.MaxUint32 >> 9)
+const Float32Sign = 1
+const Float32Exponent = 8
+const Float32Fraction = 23
+const Float64Sign = 1
+const Float64Exponent = 11
+const Float64Fraction = 52
+
+// returns the 1 sign bit, 8 exponent bits and 23 fraction bits
+func Float32ToParts(value float32) (bool, uint8, uint32) {
+	bits := math.Float32bits(value)
+	return IToB(bits >> (Float32Exponent + Float32Fraction)),
+		uint8(bits >> Float32Fraction),
+		LowestNBits(bits, Float32Fraction)
 }
-func Float64Parts(value float64) (bool, uint16, uint64) {
-	asd := math.Float64bits(value)
-	return IToB(asd >> 63), uint16((asd << 1) >> 52), asd & (math.MaxUint32 >> 12)
+
+// returns the 1 sign bit, 11 exponent bits and 52 fraction bits
+func Float64ToParts(value float64) (bool, uint16, uint64) {
+	bits := math.Float64bits(value)
+	return IToB(bits >> (Float64Exponent + Float64Fraction)),
+		uint16(bits >> Float64Fraction),
+		LowestNBits(bits, Float64Fraction)
 }
+
+// requires 1 sign bit, 8 exponent bits and 23 fraction bits
+func Float32FromParts(sign bool, exponent uint8, fraction uint32) float32 {
+	return math.Float32frombits(
+		uint32(BToI(sign))<<(Float32Exponent+Float32Fraction) |
+			uint32(exponent)<<Float32Fraction |
+			LowestNBits(fraction, Float32Fraction))
+}
+
+// requires 1 sign bit, 11 exponent bits and 52 fraction bits
+func Float64FromParts(sign bool, exponent uint16, fraction uint64) float64 {
+	return math.Float64frombits(
+		uint64(BToI(sign))<<(Float64Exponent+Float64Fraction) |
+			uint64(LowestNBits(exponent, Float64Exponent))<<Float64Fraction |
+			LowestNBits(fraction, Float64Fraction))
+}
+
 func Floor[T Number](value T) T {
 	return T(math.Floor(float64(value)))
 }
-func RoundI[T Float](value T) int {
+func RoundI[T Float](value T) int { // Vs math.Round
 	if value < 0 {
-		return int(value - .5)
+		return int(value - .5) // correct?
 	}
 	return int(value + .5)
 }
