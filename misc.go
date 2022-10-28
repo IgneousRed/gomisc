@@ -103,3 +103,11 @@ func Make2[T any](a, b int) [][]T {
 func CountTrue(bools []bool) int {
 	return Reduce(bools, 0, func(s int, b bool) int { return Ternary(b, s+1, s) })
 }
+func FirstTrueIndex(bools []bool) int {
+	for i, b := range bools {
+		if b {
+			return i
+		}
+	}
+	return -1
+}
