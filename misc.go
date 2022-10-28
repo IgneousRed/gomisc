@@ -65,24 +65,11 @@ func Zip[T, U any](ts []T, us []U) []Pair[T, U] {
 	}
 	return pairs
 }
-
-//	func Reduce[T any](s []T, f func(T, T) T) T {
-//		if len(s) == 0 {
-//			var result T
-//			return result
-//		}
-//		result := s[0]
-//		for _, v := range s[1:] {
-//			result = f(result, v)
-//		}
-//		return result
-//	}
-func Reduce[T, U any](s []T, f func(U, T) U) U {
-	var result U
-	for _, v := range s {
-		result = f(result, v)
+func Reduce[T, U any](slice []T, acc U, f func(U, T) U) U {
+	for _, v := range slice {
+		acc = f(acc, v)
 	}
-	return result
+	return acc
 }
 func Ternary[T any](b bool, t T, f T) T {
 	if b {
@@ -114,5 +101,5 @@ func Make2[T any](a, b int) [][]T {
 	return result
 }
 func CountTrue(bools []bool) int {
-	return Reduce(bools, func(s int, b bool) int { return Ternary(b, s+1, s) })
+	return Reduce(bools, 0, func(s int, b bool) int { return Ternary(b, s+1, s) })
 }

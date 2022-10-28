@@ -30,7 +30,7 @@ func ClampReport[T Number](value, min, max T) (T, bool) {
 	return value, false
 }
 func Min[T Number](values ...T) T {
-	return Reduce(values, func(a, b T) T {
+	return Reduce(values[1:], values[0], func(a, b T) T {
 		if a > b {
 			return b
 		}
@@ -38,7 +38,7 @@ func Min[T Number](values ...T) T {
 	})
 }
 func Max[T Number](values ...T) T {
-	return Reduce(values, func(a, b T) T {
+	return Reduce(values[1:], values[0], func(a, b T) T {
 		if a < b {
 			return b
 		}
