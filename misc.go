@@ -6,7 +6,6 @@ import (
 	"strconv"
 )
 
-type Atom struct{}
 type SInt interface {
 	int | int8 | int16 | int32 | int64
 }
@@ -110,4 +109,15 @@ func FirstTrueIndex(bools []bool) int {
 		}
 	}
 	return -1
+}
+func SliceNewCopy[T any](slice []T, newLen int) []T {
+	new := make([]T, newLen)
+	copy(new, slice)
+	return new
+}
+func SliceExpand[T any](slice []T) []T {
+	return SliceNewCopy(slice, len(slice)*2)
+}
+func SliceShrink[T any](slice []T) []T {
+	return SliceNewCopy(slice, len(slice)/2)
 }
