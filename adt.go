@@ -40,12 +40,19 @@ func (q *Queue[T]) Push(value T) error {
 	q.end = q.wrap(q.end + 1)
 	return nil
 }
-func (q Queue[T]) Peek() (T, error) {
+func (q Queue[T]) First() (T, error) {
 	if q.start == q.end {
 		var result T
 		return result, QueueEmpty("Queue empty")
 	}
 	return q.slice[q.start], nil
+}
+func (q Queue[T]) Last() (T, error) {
+	if q.start == q.end {
+		var result T
+		return result, QueueEmpty("Queue empty")
+	}
+	return q.slice[q.wrap(q.end-1)], nil
 }
 func (q *Queue[T]) Pop() (T, error) {
 	if q.start == q.end {
