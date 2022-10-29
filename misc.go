@@ -115,9 +115,9 @@ func SliceNewCopy[T any](slice []T, newLen int) []T {
 	copy(new, slice)
 	return new
 }
-func SliceExpand[T any](slice []T) []T {
-	return SliceNewCopy(slice, len(slice)*2)
+func SliceExpand[T any](slice []T, min int) []T {
+	return SliceNewCopy(slice, Max(len(slice)*2, min))
 }
-func SliceShrink[T any](slice []T) []T {
-	return SliceNewCopy(slice, len(slice)/2)
+func SliceShrink[T any](slice []T, min int) []T {
+	return SliceNewCopy(slice, Max(len(slice)/2, min))
 }
