@@ -79,16 +79,29 @@ func (v Vec[T]) Min() T {
 func (v Vec[T]) Max() T {
 	return Max(v...)
 }
-func (v Vec[T]) RoundI() Vec[int] {
-	switch v := any(v).(type) {
-	case Vec[float32]:
-		return MapF(v, func(v float32) int { return RoundI(v) })
-	case Vec[float64]:
-		return MapF(v, func(v float64) int { return RoundI(v) })
-	default:
-		panic("Can only round a float")
-	}
+func (v Vec[T]) Floor() Vec[T] {
+	return MapF(v, func(v T) T { return T(Floor(float64(v))) }) // Todo: Remove cast
 }
+func (v Vec[T]) FloorI() Vec[int] {
+	return MapF(v, func(v T) int { return int(Floor(float64(v))) }) // Todo: Remove cast
+}
+func (v Vec[T]) Round() Vec[T] {
+	return MapF(v, func(v T) T { return T(Round(float64(v))) }) // Todo: Remove cast
+}
+func (v Vec[T]) RoundI() Vec[int] {
+	return MapF(v, func(v T) int { return int(Round(float64(v))) }) // Todo: Remove cast
+}
+
+//	func (v Vec[T]) RoundI() Vec[int] {
+//		switch v := any(v).(type) {
+//		case Vec[float32]:
+//			return MapF(v, func(v float32) int { return RoundI(v) })
+//		case Vec[float64]:
+//			return MapF(v, func(v float64) int { return RoundI(v) })
+//		default:
+//			panic("Can only round a float")
+//		}
+//	}
 func (v Vec[T]) Wrap(lens Vec[T]) Vec[T] {
 	return MapF(Zip(v, lens), func(p Pair[T, T]) T { return Wrap(p.a, p.b) })
 }
