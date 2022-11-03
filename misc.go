@@ -77,10 +77,7 @@ func Ternary[T any](b bool, t T, f T) T {
 	return f
 }
 func BToI(value bool) int {
-	if value {
-		return 1
-	}
-	return 0
+	return Ternary(value, 1, 0)
 }
 func IToB[T Number](value T) bool {
 	return value > 0

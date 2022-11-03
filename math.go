@@ -3,10 +3,7 @@ package gomisc
 import "math"
 
 func Abs[T Number](value T) T {
-	if value < 0 {
-		return -value
-	}
-	return value
+	return Ternary(value < 0, -value, value)
 }
 
 // Wraps both numbers negative and len or more
@@ -14,12 +11,7 @@ func Wrap[T Number](value, len T) T {
 	return value - T(math.Floor(float64(value)/float64(len)))*len
 }
 func Clamp[T Number](value, min, max T) T {
-	if value > max {
-		return max
-	} else if value < min {
-		return min
-	}
-	return value
+	return Ternary(value >= max, max, Ternary(value <= min, min, value))
 }
 func ClampReport[T Number](value, min, max T) (T, bool) {
 	if value > max {
@@ -31,18 +23,12 @@ func ClampReport[T Number](value, min, max T) (T, bool) {
 }
 func Min[T Number](values ...T) T {
 	return Reduce(values[1:], values[0], func(a, b T) T {
-		if a > b {
-			return b
-		}
-		return a
+		return Ternary(a > b, b, a)
 	})
 }
 func Max[T Number](values ...T) T {
 	return Reduce(values[1:], values[0], func(a, b T) T {
-		if a < b {
-			return b
-		}
-		return a
+		return Ternary(a < b, b, a)
 	})
 }
 func Sqrt[T Float](value T) T {
@@ -52,10 +38,7 @@ func Pow[T Float](base, exp T) T {
 	return T(math.Pow(float64(base), float64(exp)))
 }
 func WithSign[T Number](signFrom, magFrom T) T {
-	if signFrom < 0 {
-		return -Abs(magFrom)
-	}
-	return Abs(magFrom)
+	return Ternary(signFrom < 0, -Abs(magFrom), Abs(magFrom))
 }
 func SignBitAndMag[T Number](value T) (signBit int, magnitude T) {
 	if value < 0 {
