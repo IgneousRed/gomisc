@@ -66,3 +66,9 @@ func SignBitAndMag[T Number](value T) (signBit int, magnitude T) {
 func Sum[T Number](values ...T) T {
 	return Reduce(values[1:], values[0], func(a, b T) T { return a + b })
 }
+func Lerp[T Number, U Float](a, b T, t U) T {
+	return T(U(a) + (U(b)-U(a))*t)
+}
+func Fade[T Float](t T) T {
+	return t * t * t * (t*(t*6-15) + 10)
+}
