@@ -5,44 +5,83 @@ import (
 	"time"
 )
 
-func rot32(value uint32, n uint8) uint32 {
-	return value<<n | value>>(32-n)
-}
-func rot64(value uint64, n uint8) uint64 {
-	return value<<n | value>>(64-n)
+// sqrt(5) / 2 - .5
+
+// Scrambles bits from multiple low quality random bits
+type Hash32 struct {
+	result  uint32
+	hashNum uint32
 }
 
-// Generates a seed from multiple low quality random numbers
-type SeedGen64 struct {
+// Mix in another number
+func (h Hash32) Mix(value uint32) Hash32 {
+	value ^= h.hashNum
+	h.hashNum *= 0x931e8875
+	value *= h.hashNum
+	value ^= value >> 16
+	h.result = h.result*0xca01f9dd - value*0x4973f715
+	h.result ^= h.result >> 16
+	return h
+}
+
+// Scrambles bits from multiple low quality random bits
+func Hash32New(value uint32) Hash32 {
+	return Hash32{0x9e3779b9, 0x43b0d7e5}.Mix(value)
+}
+
+// Returns the resulting bits
+func (g Hash32) Result() uint32 {
+	return g.result
+}
+
+// Scrambles bits from multiple low quality random bits
+func Hash32From(values ...uint32) uint32 {
+	result := Hash32New(values[0])
+	for _, value := range values[1:] {
+		result.Mix(value)
+	}
+	return result.Result()
+}
+
+// Scrambles bits from multiple low quality random bits
+type Hash64 struct {
 	result  uint64
 	hashNum uint64
 }
 
 // Mix in another number
-func (g SeedGen64) Mix(value uint64) SeedGen64 {
+func (g Hash64) Mix(value uint64) Hash64 {
 	value ^= g.hashNum
 	g.hashNum *= 0x931e8875
 	value *= g.hashNum
-	value ^= rot64(value, 32)
+	value ^= value >> 32
 	g.result = g.result*0xca01f9dd - value*0x4973f715
-	g.result ^= rot64(g.result, 32)
+	g.result ^= g.result >> 32
 	return g
 }
 
-// Generates a seed from multiple low quality random numbers
-func SeedGen64New(value uint64) SeedGen64 {
-	return SeedGen64{0x9e3779b97f4a7c15, 0x43b0d7e5}.Mix(value)
+// Scrambles bits from multiple low quality random bits
+func Hash64New(value uint64) Hash64 {
+	return Hash64{0x9e3779b97f4a7c15, 0x43b0d7e5}.Mix(value)
 }
 
-// Returns the resulting seed
-func (g SeedGen64) Result() uint64 {
+// Returns the resulting bits
+func (g Hash64) Result() uint64 {
 	return g.result
 }
 
+// Scrambles bits from multiple low quality random bits
+func Hash64From(values ...uint64) uint64 {
+	result := Hash64New(values[0])
+	for _, value := range values[1:] {
+		result.Mix(value)
+	}
+	return result.Result()
+}
+
 // Generates a seed based on time and pid
-func SeedGen64Auto() uint64 {
-	result := SeedGen64New(uint64(time.Now().UnixNano()))
-	return result.Mix(uint64(os.Getpid())).Result()
+func SeedGen64() uint64 {
+	return Hash64From(uint64(time.Now().UnixNano()), uint64(os.Getpid()))
 }
 
 type MCG32 uint64
@@ -52,9 +91,9 @@ func MCG32New(seed uint64) MCG32 {
 	return MCG32(seed*2 + 1)
 }
 
-// Initializes with SeedGen64Auto
+// Initializes with SeedGen64
 func MCG32Init() MCG32 {
-	return MCG32New(SeedGen64Auto())
+	return MCG32New(SeedGen64())
 }
 
 func (s *MCG32) raw() uint64 {
@@ -92,9 +131,9 @@ func PCG32FastNew(seed uint64) PCG32Fast {
 	return PCG32Fast(seed*2 + 1)
 }
 
-// Initializes with SeedGen64Auto
+// Initializes with SeedGen64
 func PCG32FastInit() PCG32Fast {
-	return PCG32FastNew(SeedGen64Auto())
+	return PCG32FastNew(SeedGen64())
 }
 
 // Generates a random uint32 number
@@ -128,16 +167,16 @@ func PCG32New(seed uint64) PCG32 {
 	return PCG32(seed)
 }
 
-// Initializes with SeedGen64Auto
+// Initializes with SeedGen64
 func PCG32Init() PCG32 {
-	return PCG32New(SeedGen64Auto())
+	return PCG32New(SeedGen64())
 }
 
 // Generates a random uint32 number
 func (s *PCG32) Next() uint32 {
 	state := uint64(*s)
 	*s = PCG32(state*0xf13283ad + 0x9e3779b97f4a7c15)
-	return rot32(uint32((state^state>>18)>>27), uint8(state>>59))
+	return Rotate32(uint32((state^state>>18)>>27), uint8(state>>59))
 }
 
 // Generates number in range [0,n)
