@@ -88,6 +88,9 @@ func (v Vec[T]) Round() Vec[T] {
 func (v Vec[T]) RoundI() Vec[int] {
 	return MapF(v, func(v T) int { return int(Round(float64(v))) }) // Todo: Remove cast
 }
+func (v Vec[T]) Fade() Vec[T] {
+	return MapF(v, func(v T) T { return T(Fade(float64(v))) }) // Todo: Remove cast
+}
 
 //	func (v Vec[T]) RoundI() Vec[int] {
 //		switch v := any(v).(type) {
@@ -99,6 +102,7 @@ func (v Vec[T]) RoundI() Vec[int] {
 //			panic("Can only round a float")
 //		}
 //	}
+
 func (v Vec[T]) Wrap(lens Vec[T]) Vec[T] {
 	return MapF(Zip(v, lens), func(p Pair[T, T]) T { return Wrap(p.a, p.b) })
 }
