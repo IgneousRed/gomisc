@@ -63,3 +63,6 @@ func SignBitAndMag[T Number](value T) (signBit int, magnitude T) {
 	}
 	return 0, value
 }
+func Sum[T Number](values ...T) T {
+	return Reduce(values[1:], values[0], func(a, b T) T { return a + b })
+}

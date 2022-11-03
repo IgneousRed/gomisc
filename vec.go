@@ -95,6 +95,9 @@ func (v Vec[T]) Wrap(lens Vec[T]) Vec[T] {
 func (v Vec[T]) Wrap1(len T) Vec[T] {
 	return MapF(v, func(v T) T { return Wrap(v, len) })
 }
+func (v Vec[T]) Dot(other Vec[T]) T {
+	return Sum(v.Mul(other)...)
+}
 func (v Vec[T]) Magnitude() float32 { // expand type
 	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")
 	result := float32(v[0] * v[0])
