@@ -42,16 +42,16 @@ func Float64FromParts(sign bool, exponent uint16, fraction uint64) float64 {
 }
 
 func Floor[T Float](value T) T {
-	return Ternary(value < 0, value-1, value)
+	return T(Ternary(value < 0, int64(value)-1, int64(value)))
 }
 func FloorI[T Float](value T) int {
-	return int(Ternary(value < 0, value-1, value))
+	return int(Ternary(value < 0, int64(value)-1, int64(value)))
 }
 func Round[T Float](value T) T {
-	return T(value + Ternary(value < 0, T(-.5), T(.5)))
+	return value + T(Ternary(value < 0, -.5, .5))
 }
 func RoundI[T Float](value T) int {
-	return int(value + Ternary(value < 0, T(-.5), T(.5)))
+	return int(value + T(Ternary(value < 0, -.5, .5)))
 }
 func Cos[T Float](value T) T {
 	return T(math.Cos(float64(value)))
