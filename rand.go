@@ -38,7 +38,7 @@ func (g Hash32) Result() uint32 {
 func Hash32From(values ...uint32) uint32 {
 	result := Hash32New(values[0])
 	for _, value := range values[1:] {
-		result.Mix(value)
+		result = result.Mix(value)
 	}
 	return result.Result()
 }
@@ -74,7 +74,7 @@ func (g Hash64) Result() uint64 {
 func Hash64From(values ...uint64) uint64 {
 	result := Hash64New(values[0])
 	for _, value := range values[1:] {
-		result.Mix(value)
+		result = result.Mix(value)
 	}
 	return result.Result()
 }
