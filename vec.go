@@ -120,13 +120,16 @@ func (v Vec[T]) Magnitude() float32 { // expand type
 	}
 	return Sqrt(result)
 }
-func (v Vec[T]) Normalize() Vec[float32] { // expand type
-	magRec := 1. / v.Magnitude()
+func (v Vec[T]) MagnitudeSet(value float32) Vec[float32] { // expand type
+	fix := value / v.Magnitude()
 	result := make(Vec[float32], len(v)) // with 0 len?
 	for i, e := range v {
-		result[i] = float32(e) * magRec
+		result[i] = float32(e) * fix
 	}
 	return result
+}
+func (v Vec[T]) Normalize() Vec[float32] { // expand type
+	return v.MagnitudeSet(1.)
 }
 func (v Vec[T]) Rotate90() Vec[T] {
 	PanicIf(len(v) != 2, "Rotate90 requires exactly len 2")
