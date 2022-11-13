@@ -5,20 +5,20 @@ type Vec[T Number] []T
 func Vec2I(x, y int) Vec[int] {
 	return Vec[int]{x, y}
 }
-func Vec2F(x, y float32) Vec[float32] {
-	return Vec[float32]{x, y}
+func Vec2F(x, y float64) Vec[float64] {
+	return Vec[float64]{x, y}
 }
 func Vec3I(x, y, z int) Vec[int] {
 	return Vec[int]{x, y, z}
 }
-func Vec3F(x, y, z float32) Vec[float32] {
-	return Vec[float32]{x, y, z}
+func Vec3F(x, y, z float64) Vec[float64] {
+	return Vec[float64]{x, y, z}
 }
 func Vec4I(x, y, z, w int) Vec[int] {
 	return Vec[int]{x, y, z, w}
 }
-func Vec4F(x, y, z, w float32) Vec[float32] {
-	return Vec[float32]{x, y, z, w}
+func Vec4F(x, y, z, w float64) Vec[float64] {
+	return Vec[float64]{x, y, z, w}
 }
 func (v Vec[T]) Equals(other Vec[T]) bool {
 	PanicIf(len(v) != len(other), "Trying to compare unequal sized Vecs")
@@ -30,9 +30,7 @@ func (v Vec[T]) Equals(other Vec[T]) bool {
 	return true
 }
 func (v Vec[T]) Copy() Vec[T] {
-	result := make(Vec[T], len(v))
-	copy(result, v)
-	return result
+	return SliceNewCopy(v, len(v))
 }
 func (v Vec[T]) Int() Vec[int] {
 	return MapF(v, func(v T) int { return int(v) })
@@ -42,6 +40,9 @@ func (v Vec[T]) Uint32() Vec[uint32] {
 }
 func (v Vec[T]) Float32() Vec[float32] {
 	return MapF(v, func(v T) float32 { return float32(v) })
+}
+func (v Vec[T]) Float64() Vec[float64] {
+	return MapF(v, func(v T) float64 { return float64(v) })
 }
 func (v Vec[T]) Add1(other T) Vec[T] {
 	return MapF(v, func(v T) T { return v + other })
@@ -112,23 +113,23 @@ func (v Vec[T]) Wrap1(len T) Vec[T] {
 func (v Vec[T]) Dot(other Vec[T]) T {
 	return Sum(v.Mul(other)...)
 }
-func (v Vec[T]) Magnitude() float32 { // expand type
+func (v Vec[T]) Magnitude() float64 { // expand type
 	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")
-	result := float32(v[0] * v[0])
+	result := float64(v[0] * v[0])
 	for _, e := range v[1:] {
-		result += float32(e * e)
+		result += float64(e * e)
 	}
 	return Sqrt(result)
 }
-func (v Vec[T]) MagnitudeSet(value float32) Vec[float32] { // expand type
+func (v Vec[T]) MagnitudeSet(value float64) Vec[float64] { // expand type
 	fix := value / v.Magnitude()
-	result := make(Vec[float32], len(v)) // with 0 len?
+	result := make(Vec[float64], len(v)) // with 0 len?
 	for i, e := range v {
-		result[i] = float32(e) * fix
+		result[i] = float64(e) * fix
 	}
 	return result
 }
-func (v Vec[T]) Normalize() Vec[float32] { // expand type
+func (v Vec[T]) Normalize() Vec[float64] { // expand type
 	return v.MagnitudeSet(1.)
 }
 func (v Vec[T]) Rotate90() Vec[T] {

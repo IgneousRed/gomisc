@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// sqrt(5) / 2 - .5
+// golden ratio: sqrt(5) / 2 - .5
 
 // Scrambles bits from multiple low quality random bits
 type Hash32 struct {

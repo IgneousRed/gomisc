@@ -76,10 +76,10 @@ func Ternary[T any](b bool, t T, f T) T {
 	}
 	return f
 }
-func BToI(value bool) int {
-	return Ternary(value, 1, 0)
+func BToN[T Number](value bool) T {
+	return T(Ternary(value, 1, 0))
 }
-func IToB[T Number](value T) bool {
+func NToB[T Number](value T) bool {
 	return value > 0
 }
 func IToA[T Int](value T) string {

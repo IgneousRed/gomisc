@@ -12,7 +12,7 @@ const Float64Fraction = 52
 // returns the 1 sign bit, 8 exponent bits and 23 fraction bits
 func Float32ToParts(value float32) (bool, uint8, uint32) {
 	bits := math.Float32bits(value)
-	return IToB(bits >> (Float32Exponent + Float32Fraction)),
+	return NToB(bits >> (Float32Exponent + Float32Fraction)),
 		uint8(bits >> Float32Fraction),
 		LowestNBits(bits, Float32Fraction)
 }
@@ -20,7 +20,7 @@ func Float32ToParts(value float32) (bool, uint8, uint32) {
 // returns the 1 sign bit, 11 exponent bits and 52 fraction bits
 func Float64ToParts(value float64) (bool, uint16, uint64) {
 	bits := math.Float64bits(value)
-	return IToB(bits >> (Float64Exponent + Float64Fraction)),
+	return NToB(bits >> (Float64Exponent + Float64Fraction)),
 		uint16(bits >> Float64Fraction),
 		LowestNBits(bits, Float64Fraction)
 }
