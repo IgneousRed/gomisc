@@ -28,7 +28,7 @@ func Float64ToParts(value float64) (bool, uint16, uint64) {
 // requires 1 sign bit, 8 exponent bits and 23 fraction bits
 func Float32FromParts(sign bool, exponent uint8, fraction uint32) float32 {
 	return math.Float32frombits(
-		uint32(BToI(sign))<<(Float32Exponent+Float32Fraction) |
+		BToN[uint32](sign)<<(Float32Exponent+Float32Fraction) |
 			uint32(exponent)<<Float32Fraction |
 			LowestNBits(fraction, Float32Fraction))
 }
@@ -36,7 +36,7 @@ func Float32FromParts(sign bool, exponent uint8, fraction uint32) float32 {
 // requires 1 sign bit, 11 exponent bits and 52 fraction bits
 func Float64FromParts(sign bool, exponent uint16, fraction uint64) float64 {
 	return math.Float64frombits(
-		uint64(BToI(sign))<<(Float64Exponent+Float64Fraction) |
+		BToN[uint64](sign)<<(Float64Exponent+Float64Fraction) |
 			uint64(LowestNBits(exponent, Float64Exponent))<<Float64Fraction |
 			LowestNBits(fraction, Float64Fraction))
 }
