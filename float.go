@@ -59,3 +59,5 @@ func Cos[T Float](value T) T {
 func Sin[T Float](value T) T {
 	return T(math.Sin(float64(value)))
 }
+
+// Delet dis
