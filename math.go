@@ -31,6 +31,9 @@ func Max[T Number](values ...T) T {
 		return Ternary(a < b, b, a)
 	})
 }
+func Atan2[T Float](y, x T) T {
+	return T(math.Atan2(float64(y), float64(x)))
+}
 func Sqrt[T Float](value T) T {
 	return T(math.Sqrt(float64(value)))
 }

@@ -80,6 +80,12 @@ func (v Vec2F) Norm() Vec2F {
 func (v Vec2F) Rot90() Vec2F {
 	return Vec2F{-v[1], v[0]}
 }
+func RadToVec2F(ang float64) Vec2F {
+	return Vec2F{Cos(ang), Sin(ang)}
+}
+func Vec2FToRad(v Vec2F) float64 {
+	return Atan2(v[1], v[0])
+}
 func TranslateVec2F(points []Vec2F, amount Vec2F) []Vec2F {
 	return MapF(points, func(p Vec2F) Vec2F { return p.Add(amount) })
 }
