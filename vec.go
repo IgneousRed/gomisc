@@ -69,7 +69,7 @@ func (v Vec2F) Mag() float64 {
 }
 func (v Vec2F) MagSet(value float64) Vec2F {
 	if mag := v.Mag(); mag != 0. {
-		fix := value / v.Mag()
+		fix := value / mag
 		return Vec2F{v[0] * fix, v[1] * fix}
 	}
 	return v
