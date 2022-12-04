@@ -77,6 +77,9 @@ func (v Vec2F) MagSet(value float64) Vec2F {
 func (v Vec2F) Norm() Vec2F {
 	return v.MagSet(1.)
 }
+func (v Vec2F) Project(other Vec2F) Vec2F {
+	return v.Mul1(v.Dot(other))
+}
 func (v Vec2F) Rot90() Vec2F {
 	return Vec2F{-v[1], v[0]}
 }
@@ -90,7 +93,7 @@ func TranslateVec2F(points []Vec2F, amount Vec2F) []Vec2F {
 	return MapF(points, func(p Vec2F) Vec2F { return p.Add(amount) })
 }
 func RotateVec2F(points []Vec2F, amount float64) []Vec2F {
-	newX := Vec2F{Cos(amount), Sin(amount)}
+	newX := RadToVec2F(amount)
 	newY := newX.Rot90()
 	return MapF(points, func(p Vec2F) Vec2F {
 		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
