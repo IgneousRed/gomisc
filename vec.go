@@ -1,138 +1,92 @@
 package gomisc
 
-type Vec[T Number] []T
+type Vec2F [2]float64
+type Vec2I [2]int
 
-func Vec2I(x, y int) Vec[int] {
-	return Vec[int]{x, y}
+func (v Vec2F) Eq(other Vec2F) bool {
+	return v[0] == other[0] && v[1] == other[1]
 }
-func Vec2F(x, y float64) Vec[float64] {
-	return Vec[float64]{x, y}
+func (v Vec2F) Add(other Vec2F) Vec2F {
+	return Vec2F{v[0] + other[0], v[1] + other[1]}
 }
-func Vec3I(x, y, z int) Vec[int] {
-	return Vec[int]{x, y, z}
+func (v Vec2F) Add1(other float64) Vec2F {
+	return Vec2F{v[0] + other, v[1] + other}
 }
-func Vec3F(x, y, z float64) Vec[float64] {
-	return Vec[float64]{x, y, z}
+func (v Vec2F) Sub(other Vec2F) Vec2F {
+	return Vec2F{v[0] - other[0], v[1] - other[1]}
 }
-func Vec4I(x, y, z, w int) Vec[int] {
-	return Vec[int]{x, y, z, w}
+func (v Vec2F) Sub1(other float64) Vec2F {
+	return Vec2F{v[0] - other, v[1] - other}
 }
-func Vec4F(x, y, z, w float64) Vec[float64] {
-	return Vec[float64]{x, y, z, w}
+func (v Vec2F) Mul(other Vec2F) Vec2F {
+	return Vec2F{v[0] * other[0], v[1] * other[1]}
 }
-func (v Vec[T]) Equals(other Vec[T]) bool {
-	PanicIf(len(v) != len(other), "Trying to compare unequal sized Vecs")
-	for i, o := range other {
-		if v[i] != o {
-			return false
-		}
-	}
-	return true
+func (v Vec2F) Mul1(other float64) Vec2F {
+	return Vec2F{v[0] * other, v[1] * other}
 }
-func (v Vec[T]) Copy() Vec[T] {
-	return SliceNewCopy(v, len(v))
+func (v Vec2F) Div(other Vec2F) Vec2F {
+	return Vec2F{v[0] / other[0], v[1] / other[1]}
 }
-func (v Vec[T]) Int() Vec[int] {
-	return MapF(v, func(v T) int { return int(v) })
+func (v Vec2F) Div1(other float64) Vec2F {
+	return Vec2F{v[0] / other, v[1] / other}
 }
-func (v Vec[T]) Uint32() Vec[uint32] {
-	return MapF(v, func(v T) uint32 { return uint32(v) })
+func (v Vec2F) Abs() Vec2F {
+	return Vec2F{Abs(v[0]), Abs(v[1])}
 }
-func (v Vec[T]) Float32() Vec[float32] {
-	return MapF(v, func(v T) float32 { return float32(v) })
+func (v Vec2F) Min() float64 {
+	return Min(v[:]...)
 }
-func (v Vec[T]) Float64() Vec[float64] {
-	return MapF(v, func(v T) float64 { return float64(v) })
+func (v Vec2F) Max() float64 {
+	return Max(v[:]...)
 }
-func (v Vec[T]) Add1(other T) Vec[T] {
-	return MapF(v, func(v T) T { return v + other })
+func (v Vec2F) Floor() Vec2F {
+	return Vec2F{Floor(v[0]), Floor(v[1])}
 }
-func (v Vec[T]) Add(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a + p.b })
+func (v Vec2F) FloorI() Vec2I {
+	return Vec2I{FloorI(v[0]), FloorI(v[1])}
 }
-func (v Vec[T]) Sub1(other T) Vec[T] {
-	return MapF(v, func(v T) T { return v - other })
+func (v Vec2F) Round() Vec2F {
+	return Vec2F{Round(v[0]), Round(v[1])}
 }
-func (v Vec[T]) Sub(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a - p.b })
+func (v Vec2F) RoundI() Vec2I {
+	return Vec2I{RoundI(v[0]), RoundI(v[1])}
 }
-func (v Vec[T]) Mul1(other T) Vec[T] {
-	return MapF(v, func(v T) T { return v * other })
+func (v Vec2F) Fade() Vec2F {
+	return Vec2F{Fade(v[0]), Fade(v[1])}
 }
-func (v Vec[T]) Mul(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a * p.b })
+func (v Vec2F) Wrap(lens Vec2F) Vec2F {
+	return Vec2F{Wrap(v[0], lens[0]), Wrap(v[1], lens[1])}
 }
-func (v Vec[T]) Div1(other T) Vec[T] {
-	return MapF(v, func(v T) T { return v / other })
+func (v Vec2F) Wrap1(len float64) Vec2F {
+	return Vec2F{Wrap(v[0], len), Wrap(v[1], len)}
 }
-func (v Vec[T]) Div(other Vec[T]) Vec[T] {
-	return MapF(Zip(v, other), func(p Pair[T, T]) T { return p.a / p.b })
+func (v Vec2F) Dot(other Vec2F) float64 {
+	temp := v.Mul(other)
+	return Sum(temp[:]...)
 }
-func (v Vec[T]) Abs() Vec[T] {
-	return MapF(v, func(v T) T { return Abs(v) })
+func (v Vec2F) Mag() float64 {
+	return Sqrt(v[0]*v[0] + v[1]*v[1])
 }
-func (v Vec[T]) Min() T {
-	return Min(v...)
+func (v Vec2F) MagSet(value float64) Vec2F {
+	fix := value / v.Mag()
+	return Vec2F{v[0] * fix, v[1] * fix}
 }
-func (v Vec[T]) Max() T {
-	return Max(v...)
+func (v Vec2F) Norm() Vec2F {
+	return v.MagSet(1.)
 }
-func (v Vec[T]) Floor() Vec[T] {
-	return MapF(v, func(v T) T { return T(Floor(float64(v))) }) // Todo: Remove cast
+func (v Vec2F) Rot90() Vec2F {
+	return Vec2F{-v[1], v[0]}
 }
-func (v Vec[T]) FloorI() Vec[int] {
-	return MapF(v, func(v T) int { return int(Floor(float64(v))) }) // Todo: Remove cast
+func TranslateVec2F(points []Vec2F, amount Vec2F) []Vec2F {
+	return MapF(points, func(p Vec2F) Vec2F { return p.Add(amount) })
 }
-func (v Vec[T]) Round() Vec[T] {
-	return MapF(v, func(v T) T { return T(Round(float64(v))) }) // Todo: Remove cast
+func RotateVec2F(points []Vec2F, amount float64) []Vec2F {
+	newX := Vec2F{Cos(amount), Sin(amount)}
+	newY := newX.Rot90()
+	return MapF(points, func(p Vec2F) Vec2F {
+		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
+	})
 }
-func (v Vec[T]) RoundI() Vec[int] {
-	return MapF(v, func(v T) int { return int(Round(float64(v))) }) // Todo: Remove cast
-}
-func (v Vec[T]) Fade() Vec[T] {
-	return MapF(v, func(v T) T { return T(Fade(float64(v))) }) // Todo: Remove cast
-}
-
-//	func (v Vec[T]) RoundI() Vec[int] {
-//		switch v := any(v).(type) {
-//		case Vec[float32]:
-//			return MapF(v, func(v float32) int { return RoundI(v) })
-//		case Vec[float64]:
-//			return MapF(v, func(v float64) int { return RoundI(v) })
-//		default:
-//			panic("Can only round a float")
-//		}
-//	}
-
-func (v Vec[T]) Wrap(lens Vec[T]) Vec[T] {
-	return MapF(Zip(v, lens), func(p Pair[T, T]) T { return Wrap(p.a, p.b) })
-}
-func (v Vec[T]) Wrap1(len T) Vec[T] {
-	return MapF(v, func(v T) T { return Wrap(v, len) })
-}
-func (v Vec[T]) Dot(other Vec[T]) T {
-	return Sum(v.Mul(other)...)
-}
-func (v Vec[T]) Magnitude() float64 { // expand type
-	PanicIf(len(v) == 0, "Trying to find magnitude of empty vec")
-	result := float64(v[0] * v[0])
-	for _, e := range v[1:] {
-		result += float64(e * e)
-	}
-	return Sqrt(result)
-}
-func (v Vec[T]) MagnitudeSet(value float64) Vec[float64] { // expand type
-	fix := value / v.Magnitude()
-	result := make(Vec[float64], len(v)) // with 0 len?
-	for i, e := range v {
-		result[i] = float64(e) * fix
-	}
-	return result
-}
-func (v Vec[T]) Normalize() Vec[float64] { // expand type
-	return v.MagnitudeSet(1.)
-}
-func (v Vec[T]) Rotate90() Vec[T] {
-	PanicIf(len(v) != 2, "Rotate90 requires exactly len 2")
-	return Vec[T]{-v[1], v[0]}
+func ScaleVec2F(points []Vec2F, amount Vec2F) []Vec2F {
+	return MapF(points, func(p Vec2F) Vec2F { return p.Mul(amount) })
 }

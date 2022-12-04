@@ -6,7 +6,7 @@ func Abs[T Number](value T) T {
 	return Ternary(value < 0, -value, value)
 }
 
-// Wraps both numbers negative and len or more
+// Wraps both negative and len or more
 func Wrap[T Number](value, len T) T {
 	return value - T(math.Floor(float64(value)/float64(len)))*len
 }
