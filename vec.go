@@ -68,8 +68,11 @@ func (v Vec2F) Mag() float64 {
 	return Sqrt(v[0]*v[0] + v[1]*v[1])
 }
 func (v Vec2F) MagSet(value float64) Vec2F {
-	fix := value / v.Mag()
-	return Vec2F{v[0] * fix, v[1] * fix}
+	if mag := v.Mag(); mag != 0. {
+		fix := value / v.Mag()
+		return Vec2F{v[0] * fix, v[1] * fix}
+	}
+	return v
 }
 func (v Vec2F) Norm() Vec2F {
 	return v.MagSet(1.)
