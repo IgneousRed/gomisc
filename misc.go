@@ -76,6 +76,12 @@ func Ternary[T any](b bool, t T, f T) T {
 	}
 	return f
 }
+func BToI(value bool) int {
+	return Ternary(value, 1, 0)
+}
+func BToF(value bool) float64 {
+	return Ternary(value, 1., 0.)
+}
 func BToN[T Number](value bool) T {
 	return T(Ternary(value, 1, 0))
 }
