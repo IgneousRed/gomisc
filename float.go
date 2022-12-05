@@ -5,6 +5,26 @@ import "math"
 type Rad64 float64
 type Deg64 float64
 
+// Mathematical constants.
+const (
+	E       = 2.7182818284590452353602874713527
+	Phi     = 1.6180339887498948482045868343656
+	Pi      = 3.1415926535897932384626433832795
+	Tau     = 6.2831853071795864769252867665590
+	Rad2Deg = 180 / math.Pi
+	Deg2Rad = math.Pi / 180
+
+	Sqrt2   = 1.4142135623730950488016887242097
+	SqrtE   = 1.6487212707001281468486507878142
+	SqrtPi  = 1.7724538509055160272981674833411
+	SqrtPhi = 1.2720196495140689642524224617375
+
+	Ln2    = 0.6931471805599453094172321214582
+	Log2E  = 1 / Ln2
+	Ln10   = 2.3025850929940456840179914546844
+	Log10E = 1 / Ln10
+)
+
 const F32Sign = 1
 const F32Exponent = 8
 const F32Fraction = 23
@@ -46,12 +66,12 @@ func PartsToF64(sign bool, exponent uint16, fraction uint64) float64 {
 
 // Convert to degrees
 func (r Rad64) Deg() Deg64 {
-	return Deg64(r * 180 / math.Pi)
+	return Deg64(r * Rad2Deg)
 }
 
 // Convert to radians
 func (r Deg64) Rad() Rad64 {
-	return Rad64(r * math.Pi / 180)
+	return Rad64(r * Deg2Rad)
 }
 
 // Radian cosine
