@@ -2,17 +2,17 @@ package gomisc
 
 import "math"
 
+// Wraps `value` to `len`, even if `value` < 0
+func Wrap[T Number](value, len T) T {
+	return value - T(Floor(float64(value)/float64(len)))*len
+}
+
 // Absolute value (non-negative)
 func Abs[T Number](value T) T { // TODO VS math version
 	if value < 0 {
 		return -value
 	}
 	return value
-}
-
-// Wraps `value` to `len`, even if `value` < 0
-func Wrap[T Number](value, len T) T {
-	return value - T(Floor(float64(value)/float64(len)))*len
 }
 
 // Confines `value` between `min`-`max` range

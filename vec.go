@@ -69,57 +69,23 @@ func (v Vec2F) Abs() Vec2F {
 
 // Lowest `v` element
 func (v Vec2F) Min() float64 {
-	return Min(v.x, v.y)
+	if v.y < v.x {
+		return v.y
+	}
+	return v.x
 }
 
 // Highest `v` element
 func (v Vec2F) Max() float64 {
-	return Max(v.x, v.y)
-}
-
-// Floor `v` elements
-func (v Vec2F) Floor() Vec2F {
-	return Vec2F{Floor(v.x), Floor(v.y)}
-}
-
-// FloorI `v` elements
-func (v Vec2F) FloorI() Vec2I {
-	return Vec2I{FloorI(v.x), FloorI(v.y)}
-}
-
-// Round `v` elements
-func (v Vec2F) Round() Vec2F {
-	return Vec2F{Round(v.x), Round(v.y)}
-}
-
-// RoundI `v` elements
-func (v Vec2F) RoundI() Vec2I {
-	return Vec2I{RoundI(v.x), RoundI(v.y)}
-}
-
-// `v` and `other` dot product
-func (v Vec2F) Dot(other Vec2F) float64 {
-	temp := v.Mul(other)
-	return Sum(temp.x, temp.y)
-}
-
-// Magnitude
-func (v Vec2F) Mag() float64 {
-	return Sqrt(v.x*v.x + v.y*v.y)
-}
-
-// `v` direction with `value` magnitude
-func (v Vec2F) MagSet(value float64) Vec2F {
-	if mag := v.Mag(); mag != 0 {
-		fix := value / mag
-		return Vec2F{v.x * fix, v.y * fix}
+	if v.y > v.x {
+		return v.y
 	}
-	return v
+	return v.x
 }
 
-// `v` direction with 1 magnitude
-func (v Vec2F) Norm() Vec2F {
-	return v.MagSet(1)
+// `v` element Sum
+func (v Vec2F) Sum() float64 {
+	return v.x + v.y
 }
 
 // Angle to direction
@@ -142,6 +108,55 @@ func (v Vec2F) Deg() Deg64 {
 	return Atan2(v.y, v.x).Deg()
 }
 
+// Floor `v` elements
+func (v Vec2F) Floor() Vec2F {
+	return Vec2F{Floor(v.x), Floor(v.y)}
+}
+
+// FloorI `v` elements
+func (v Vec2F) FloorI() Vec2I {
+	return Vec2I{FloorI(v.x), FloorI(v.y)}
+}
+
+// Round `v` elements
+func (v Vec2F) Round() Vec2F {
+	return Vec2F{Round(v.x), Round(v.y)}
+}
+
+// RoundI `v` elements
+func (v Vec2F) RoundI() Vec2I {
+	return Vec2I{RoundI(v.x), RoundI(v.y)}
+}
+
+// `v` and `other` linear interpolation
+func (v Vec2F) Lerp(other Vec2F, t float64) Vec2F {
+	return other.Sub(v).Mul1(t).Add(v)
+}
+
+// Magnitude
+func (v Vec2F) Mag() float64 {
+	return Sqrt(v.x*v.x + v.y*v.y)
+}
+
+// `v` direction with `value` magnitude
+func (v Vec2F) MagSet(value float64) Vec2F {
+	if mag := v.Mag(); mag != 0 {
+		fix := value / mag
+		return Vec2F{v.x * fix, v.y * fix}
+	}
+	return v
+}
+
+// `v` direction with 1 magnitude
+func (v Vec2F) Norm() Vec2F {
+	return v.MagSet(1)
+}
+
+// `v` and `other` dot product
+func (v Vec2F) Dot(other Vec2F) float64 {
+	return v.Mul(other).Sum()
+}
+
 // Angle from `v` to `other`
 func (v Vec2F) AngTo(other Vec2F) Rad64 {
 	return other.Sub(v).Rad()
@@ -160,11 +175,6 @@ func (v Vec2F) Dst(other Vec2F) float64 {
 	return v.Sub(other).Mag()
 }
 
-// `v` and `other` linear interpolation
-func (v Vec2F) Lerp(other Vec2F, t float64) Vec2F {
-	return other.Sub(v).Mul1(t).Add(v)
-}
-
 // Move `v` towards `other` by `dlt`
 func (v Vec2F) MoveTowards(other Vec2F, dlt float64) Vec2F {
 	if v.Dst(other) <= dlt {
@@ -175,17 +185,17 @@ func (v Vec2F) MoveTowards(other Vec2F, dlt float64) Vec2F {
 
 // Project `other` onto `v`, changing magnitude of `v`
 func (v Vec2F) Project(other Vec2F) Vec2F {
-	return v.Mul1(v.Dot(other)) // TODO check correctness
-}
-
-// Reflect `v` on `norm`
-func (v Vec2F) Reflect(norm Vec2F) Vec2F {
-	return norm.Rot90().Norm().Project(v).Add(norm.Project(v)) // TODO check correctness
+	return v.MagSet(v.Dot(other))
 }
 
 // Rotate `v` 90 degrees
 func (v Vec2F) Rot90() Vec2F {
 	return Vec2F{-v.y, v.x}
+}
+
+// Reflect `v` on `norm`
+func (v Vec2F) Reflect(norm Vec2F) Vec2F {
+	return norm.Rot90().Norm().Project(v).Add(norm.Project(v))
 }
 
 // Add `amount` to each point
