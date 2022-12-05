@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// TODO play with rand
+
 // golden ratio: sqrt(5) / 2 - .5
 
 // Scrambles bits from multiple low quality random bits
@@ -176,7 +178,7 @@ func PCG32Init() PCG32 {
 func (s *PCG32) Next() uint32 {
 	state := uint64(*s)
 	*s = PCG32(state*0xf13283ad + 0x9e3779b97f4a7c15)
-	return Rotate32(uint32((state^state>>18)>>27), uint8(state>>59))
+	return RotateU32(uint32((state^state>>18)>>27), uint8(state>>59))
 }
 
 // Generates number in range [0,n)

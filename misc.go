@@ -22,35 +22,35 @@ type Number interface {
 	Int | Float
 }
 
-// Panic if error != nil
+// Panic if `err` != nil
 func PanicErr(desc string, err error) {
 	if err != nil {
 		log.Panic(desc, err)
 	}
 }
 
-// Panic if b
+// Panic if `b`
 func PanicIf(b bool, desc string) {
 	if b {
 		log.Panic(desc)
 	}
 }
 
-// Fatal if error != nil
+// Fatal if `err` != nil
 func FatalErr(desc string, err error) {
 	if err != nil {
 		log.Fatal(desc, err)
 	}
 }
 
-// Fatal if b
+// Fatal if `b`
 func FatalIf(b bool, desc string) {
 	if b {
 		log.Fatal(desc)
 	}
 }
 
-// Apply f to every s producing a new slice of results
+// Apply `f` to every `s` producing a slice of results
 func MapF[T any, U any](s []T, f func(T) U) []U {
 	n := make([]U, len(s))
 	for i, e := range s {
@@ -65,7 +65,7 @@ type Pair[T, U any] struct {
 	b U
 }
 
-// Merges 2 slices into a slice of pairs
+// Merges `ts` and `us` into a slice of pairs
 func Zip[T, U any](ts []T, us []U) []Pair[T, U] {
 	PanicIf(len(ts) != len(us), fmt.Sprintf("Can't zip slices of different length (%v vs %v)", len(ts), len(us)))
 	pairs := make([]Pair[T, U], len(ts))
@@ -75,7 +75,7 @@ func Zip[T, U any](ts []T, us []U) []Pair[T, U] {
 	return pairs
 }
 
-// Folds a slice into a single value using f
+// Folds `slice` into a single value using `f` starting from `acc`
 func Reduce[T, U any](slice []T, acc U, f func(U, T) U) U {
 	for _, v := range slice {
 		acc = f(acc, v)
@@ -83,7 +83,7 @@ func Reduce[T, U any](slice []T, acc U, f func(U, T) U) U {
 	return acc
 }
 
-// Ternary expression
+// `t` if `b` otherwise `f`
 func Ternary[T any](b bool, t T, f T) T {
 	if b {
 		return t
@@ -93,17 +93,26 @@ func Ternary[T any](b bool, t T, f T) T {
 
 // Bool to int
 func BToI(value bool) int {
-	return Ternary(value, 1, 0)
+	if value {
+		return 1
+	}
+	return 0
 }
 
 // Bool to float64
 func BToF(value bool) float64 {
-	return Ternary(value, 1., 0.)
+	if value {
+		return 1
+	}
+	return 0
 }
 
 // Bool to Number
 func BToN[T Number](value bool) T {
-	return T(Ternary(value, 1, 0))
+	if value {
+		return 1
+	}
+	return 0
 }
 
 // Number to bool
@@ -131,12 +140,18 @@ func Make2[T any](a, b int) [][]T {
 	return result
 }
 
-// Number of true in a bool slice
+// Number of true in `bools`
 func CountTrue(bools []bool) int {
-	return Reduce(bools, 0, func(s int, b bool) int { return Ternary(b, s+1, s) })
+	result := 0
+	for _, b := range bools {
+		if b {
+			result++
+		}
+	}
+	return result
 }
 
-// Index of the first true inside bool slice
+// Index of the first true inside `bools`
 func FirstTrueIndex(bools []bool) (index int, ok bool) {
 	for i, b := range bools {
 		if b {
@@ -146,19 +161,19 @@ func FirstTrueIndex(bools []bool) (index int, ok bool) {
 	return 0, false
 }
 
-// Slice copy with size len
+// Copy `slice` copy with size `len`
 func SliceNewCopy[T any](slice []T, len int) []T {
 	new := make([]T, len)
 	copy(new, slice)
 	return new
 }
 
-// Copies slice with double the size
+// Copy `slice` with double the size
 func SliceExpand[T any](slice []T, min int) []T {
 	return SliceNewCopy(slice, Max(len(slice)*2, min))
 }
 
-// Copies slice with half the size
+// Copiy `slice` with half the size
 func SliceShrink[T any](slice []T, min int) []T {
 	return SliceNewCopy(slice, Max(len(slice)/2, min))
 }
