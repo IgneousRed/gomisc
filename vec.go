@@ -77,17 +77,38 @@ func (v Vec2F) MagSet(value float64) Vec2F {
 func (v Vec2F) Norm() Vec2F {
 	return v.MagSet(1.)
 }
-func (v Vec2F) Project(other Vec2F) Vec2F {
-	return v.Mul1(v.Dot(other))
-}
-func (v Vec2F) Rot90() Vec2F {
-	return Vec2F{-v[1], v[0]}
-}
 func RadToVec2F(ang float64) Vec2F {
 	return Vec2F{Cos(ang), Sin(ang)}
 }
 func Vec2FToRad(v Vec2F) float64 {
 	return Atan2(v[1], v[0])
+}
+func (v Vec2F) AngleTo(other Vec2F) float64 {
+	return Vec2FToRad(other.Sub(v))
+}
+func (v Vec2F) ClampMag(max float64) Vec2F {
+	return Ternary(v.Mag() > max, v.MagSet(max), v)
+}
+func (v Vec2F) Distance(other Vec2F) float64 {
+	return v.Sub(other).Mag()
+}
+func (v Vec2F) Lerp(other Vec2F, t float64) Vec2F {
+	return other.Sub(v).Mul1(t).Add(v)
+}
+func (v Vec2F) MoveTowards(other Vec2F, dlt float64) Vec2F {
+	return Ternary(v.Distance(other) <= dlt,
+		other,
+		v.Add(other.Sub(v).MagSet(dlt)),
+	)
+}
+func (v Vec2F) Project(other Vec2F) Vec2F {
+	return v.Mul1(v.Dot(other))
+}
+func (v Vec2F) Reflect(norm Vec2F) Vec2F {
+	return norm.Rot90().Norm().Project(v).Add(norm.Project(v))
+}
+func (v Vec2F) Rot90() Vec2F {
+	return Vec2F{-v[1], v[0]}
 }
 func TranslateVec2F(points []Vec2F, amount Vec2F) []Vec2F {
 	return MapF(points, func(p Vec2F) Vec2F { return p.Add(amount) })
