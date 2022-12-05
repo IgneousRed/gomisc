@@ -2,6 +2,8 @@ package gomisc
 
 import "math"
 
+type Rad float64
+
 func Abs[T Number](value T) T {
 	return Ternary(value < 0, -value, value)
 }

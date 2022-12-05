@@ -77,26 +77,26 @@ func (v Vec2F) MagSet(value float64) Vec2F {
 func (v Vec2F) Norm() Vec2F {
 	return v.MagSet(1.)
 }
-func RadToVec2F(ang float64) Vec2F {
-	return Vec2F{Cos(ang), Sin(ang)}
+func (a Rad) Vec2F() Vec2F {
+	return Vec2F{Cos(float64(a)), Sin(float64(a))}
 }
-func Vec2FToRad(v Vec2F) float64 {
-	return Atan2(v[1], v[0])
+func (v Vec2F) Rad() Rad {
+	return Rad(Atan2(v[1], v[0]))
 }
-func (v Vec2F) AngleTo(other Vec2F) float64 {
-	return Vec2FToRad(other.Sub(v))
+func (v Vec2F) AngTo(other Vec2F) Rad {
+	return other.Sub(v).Rad()
 }
 func (v Vec2F) ClampMag(max float64) Vec2F {
 	return Ternary(v.Mag() > max, v.MagSet(max), v)
 }
-func (v Vec2F) Distance(other Vec2F) float64 {
+func (v Vec2F) Dst(other Vec2F) float64 {
 	return v.Sub(other).Mag()
 }
 func (v Vec2F) Lerp(other Vec2F, t float64) Vec2F {
 	return other.Sub(v).Mul1(t).Add(v)
 }
 func (v Vec2F) MoveTowards(other Vec2F, dlt float64) Vec2F {
-	return Ternary(v.Distance(other) <= dlt,
+	return Ternary(v.Dst(other) <= dlt,
 		other,
 		v.Add(other.Sub(v).MagSet(dlt)),
 	)
@@ -113,8 +113,8 @@ func (v Vec2F) Rot90() Vec2F {
 func TranslateVec2F(points []Vec2F, amount Vec2F) []Vec2F {
 	return MapF(points, func(p Vec2F) Vec2F { return p.Add(amount) })
 }
-func RotateVec2F(points []Vec2F, amount float64) []Vec2F {
-	newX := RadToVec2F(amount)
+func RotateVec2F(points []Vec2F, amount Rad) []Vec2F {
+	newX := amount.Vec2F()
 	newY := newX.Rot90()
 	return MapF(points, func(p Vec2F) Vec2F {
 		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
