@@ -1,91 +1,87 @@
 package gomisc
 
-type Vec2F struct {
-	X, Y float64
-}
-type Vec2I struct {
-	X, Y int
-}
+type Vec2F [2]float64
+type Vec2I [2]int
 
 // Are `v` and `other` identical
 func (v Vec2F) Eq(other Vec2F) bool {
-	return v.X == other.X && v.Y == other.Y
+	return v[0] == other[0] && v[1] == other[1]
 }
 
 // `v` and `other` pairwise add
 func (v Vec2F) Add(other Vec2F) Vec2F {
-	return Vec2F{v.X + other.X, v.Y + other.Y}
+	return Vec2F{v[0] + other[0], v[1] + other[1]}
 }
 
 // Add `other` to each `v` element
 func (v Vec2F) Add1(other float64) Vec2F {
-	return Vec2F{v.X + other, v.Y + other}
+	return Vec2F{v[0] + other, v[1] + other}
 }
 
 // `v` and `other` pairwise subtract
 func (v Vec2F) Sub(other Vec2F) Vec2F {
-	return Vec2F{v.X - other.X, v.Y - other.Y}
+	return Vec2F{v[0] - other[0], v[1] - other[1]}
 }
 
 // Subtract `other` from each `v` element
 func (v Vec2F) Sub1(other float64) Vec2F {
-	return Vec2F{v.X - other, v.Y - other}
+	return Vec2F{v[0] - other, v[1] - other}
 }
 
 // `v` and `other` pairwise multiply
 func (v Vec2F) Mul(other Vec2F) Vec2F {
-	return Vec2F{v.X * other.X, v.Y * other.Y}
+	return Vec2F{v[0] * other[0], v[1] * other[1]}
 }
 
 // Multiply `other` with each `v` element
 func (v Vec2F) Mul1(other float64) Vec2F {
-	return Vec2F{v.X * other, v.Y * other}
+	return Vec2F{v[0] * other, v[1] * other}
 }
 
 // `v` and `other` pairwise divide
 func (v Vec2F) Div(other Vec2F) Vec2F {
-	return Vec2F{v.X / other.X, v.Y / other.Y}
+	return Vec2F{v[0] / other[0], v[1] / other[1]}
 }
 
 // Divide `other` from each `v` element
 func (v Vec2F) Div1(other float64) Vec2F {
-	return Vec2F{v.X / other, v.Y / other}
+	return Vec2F{v[0] / other, v[1] / other}
 }
 
 // `v` and `other` pairwise wrap
 func (v Vec2F) Wrap(lens Vec2F) Vec2F {
-	return Vec2F{Wrap(v.X, lens.X), Wrap(v.Y, lens.Y)}
+	return Vec2F{Wrap(v[0], lens[0]), Wrap(v[1], lens[1])}
 }
 
 // Wrap `len` to each `v` element
 func (v Vec2F) Wrap1(len float64) Vec2F {
-	return Vec2F{Wrap(v.X, len), Wrap(v.Y, len)}
+	return Vec2F{Wrap(v[0], len), Wrap(v[1], len)}
 }
 
 // Make `v` elements absolute
 func (v Vec2F) Abs() Vec2F {
-	return Vec2F{Abs(v.X), Abs(v.Y)}
+	return Vec2F{Abs(v[0]), Abs(v[1])}
 }
 
 // Lowest `v` element
 func (v Vec2F) Min() float64 {
-	if v.Y < v.X {
-		return v.Y
+	if v[1] < v[0] {
+		return v[1]
 	}
-	return v.X
+	return v[0]
 }
 
 // Highest `v` element
 func (v Vec2F) Max() float64 {
-	if v.Y > v.X {
-		return v.Y
+	if v[1] > v[0] {
+		return v[1]
 	}
-	return v.X
+	return v[0]
 }
 
 // `v` element Sum
 func (v Vec2F) Sum() float64 {
-	return v.X + v.Y
+	return v[0] + v[1]
 }
 
 // Angle to direction
@@ -100,32 +96,32 @@ func (a Deg64) Vec2F() Vec2F {
 
 // Direction to angle
 func (v Vec2F) Rad() Rad64 {
-	return Atan2(v.Y, v.X)
+	return Atan2(v[1], v[0])
 }
 
 // Direction to angle
 func (v Vec2F) Deg() Deg64 {
-	return Atan2(v.Y, v.X).Deg()
+	return Atan2(v[1], v[0]).Deg()
 }
 
 // Floor `v` elements
 func (v Vec2F) Floor() Vec2F {
-	return Vec2F{Floor(v.X), Floor(v.Y)}
+	return Vec2F{Floor(v[0]), Floor(v[1])}
 }
 
 // FloorI `v` elements
 func (v Vec2F) FloorI() Vec2I {
-	return Vec2I{FloorI(v.X), FloorI(v.Y)}
+	return Vec2I{FloorI(v[0]), FloorI(v[1])}
 }
 
 // Round `v` elements
 func (v Vec2F) Round() Vec2F {
-	return Vec2F{Round(v.X), Round(v.Y)}
+	return Vec2F{Round(v[0]), Round(v[1])}
 }
 
 // RoundI `v` elements
 func (v Vec2F) RoundI() Vec2I {
-	return Vec2I{RoundI(v.X), RoundI(v.Y)}
+	return Vec2I{RoundI(v[0]), RoundI(v[1])}
 }
 
 // `v` and `other` linear interpolation
@@ -135,14 +131,14 @@ func (v Vec2F) Lerp(other Vec2F, t float64) Vec2F {
 
 // Magnitude
 func (v Vec2F) Mag() float64 {
-	return Sqrt(v.X*v.X + v.Y*v.Y)
+	return Sqrt(v[0]*v[0] + v[1]*v[1])
 }
 
 // `v` direction with `value` magnitude
 func (v Vec2F) MagSet(value float64) Vec2F {
 	if mag := v.Mag(); mag != 0 {
 		fix := value / mag
-		return Vec2F{v.X * fix, v.Y * fix}
+		return Vec2F{v[0] * fix, v[1] * fix}
 	}
 	return v
 }
@@ -190,7 +186,7 @@ func (v Vec2F) Project(other Vec2F) Vec2F {
 
 // Rotate `v` 90 degrees
 func (v Vec2F) Rot90() Vec2F {
-	return Vec2F{-v.Y, v.X}
+	return Vec2F{-v[1], v[0]}
 }
 
 // Reflect `v` on `norm`
@@ -208,7 +204,7 @@ func RotateVec2FRad(points []Vec2F, amount Rad64) []Vec2F {
 	newX := amount.Vec2F()
 	newY := newX.Rot90()
 	return MapF(points, func(p Vec2F) Vec2F {
-		return newX.Mul1(p.X).Add(newY.Mul1(p.Y))
+		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
 	})
 }
 
@@ -217,7 +213,7 @@ func RotateVec2FDeg(points []Vec2F, amount Deg64) []Vec2F {
 	newX := amount.Vec2F()
 	newY := newX.Rot90()
 	return MapF(points, func(p Vec2F) Vec2F {
-		return newX.Mul1(p.X).Add(newY.Mul1(p.Y))
+		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
 	})
 }
 
