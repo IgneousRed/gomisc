@@ -23,7 +23,7 @@ type Number interface {
 }
 
 // Panic if `err` != nil.
-func PanicErr(desc string, err error) {
+func PanicErr(err error, desc string) {
 	if err != nil {
 		log.Panic(desc, err)
 	}
@@ -37,7 +37,7 @@ func PanicIf(b bool, desc string) {
 }
 
 // Fatal if `err` != nil.
-func FatalErr(desc string, err error) {
+func FatalErr(err error, desc string) {
 	if err != nil {
 		log.Fatal(desc, err)
 	}
