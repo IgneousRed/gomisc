@@ -210,28 +210,49 @@ func (v Vec2F) Reflect(norm Vec2F) Vec2F {
 
 // Add `amount` to each point.
 func TranslateVec2F(points []Vec2F, amount Vec2F) []Vec2F {
-	return MapF(points, func(p Vec2F) Vec2F { return p.Add(amount) })
+	result := make([]Vec2F, len(points))
+	for i, p := range points {
+		result[i] = p.Add(amount)
+	}
+	return result
 }
 
 // Rotate every point around origin by `amount`.
 func RotateVec2FRad(points []Vec2F, amount Rad) []Vec2F {
 	newX := amount.Vec2F()
 	newY := newX.Rot90()
-	return MapF(points, func(p Vec2F) Vec2F {
-		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
-	})
+	result := make([]Vec2F, len(points))
+	for i, p := range points {
+		result[i] = newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
+	}
+	return result
 }
 
 // Rotate every point around origin by `amount`.
 func RotateVec2FDeg(points []Vec2F, amount Deg) []Vec2F {
 	newX := amount.Vec2F()
 	newY := newX.Rot90()
-	return MapF(points, func(p Vec2F) Vec2F {
-		return newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
-	})
+	result := make([]Vec2F, len(points))
+	for i, p := range points {
+		result[i] = newX.Mul1(p[0]).Add(newY.Mul1(p[1]))
+	}
+	return result
 }
 
 // Multiply `amount` with each point.
 func ScaleVec2F(points []Vec2F, amount Vec2F) []Vec2F {
-	return MapF(points, func(p Vec2F) Vec2F { return p.Mul(amount) })
+	result := make([]Vec2F, len(points))
+	for i, p := range points {
+		result[i] = p.Mul(amount)
+	}
+	return result
+}
+
+// Multiply `amount` with each point.
+func Scale1Vec2F(points []Vec2F, amount float64) []Vec2F {
+	result := make([]Vec2F, len(points))
+	for i, p := range points {
+		result[i] = p.Mul1(amount)
+	}
+	return result
 }
