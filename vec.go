@@ -8,6 +8,16 @@ func (v Vec2F) Eq(other Vec2F) bool {
 	return v[0] == other[0] && v[1] == other[1]
 }
 
+// Changes sign of each `v` element.
+func (v Vec2F) Neg() Vec2F {
+	return Vec2F{-v[0], -v[1]}
+}
+
+// Reciprocates each `v` element.
+func (v Vec2F) Rcp() Vec2F {
+	return Vec2F{1 / v[0], 1 / v[1]}
+}
+
 // `v` and `other` pairwise add.
 func (v Vec2F) Add(other Vec2F) Vec2F {
 	return Vec2F{v[0] + other[0], v[1] + other[1]}
