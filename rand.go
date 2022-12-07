@@ -123,7 +123,7 @@ func (s *MCG32) Normal32() float32 {
 
 // Generates number in range [0,1]
 func (s *MCG32) Normal64() float64 {
-	return float64(s.raw()) / float64(1<<64-1)
+	return float64(s.raw()) / float64(1<<32-1)
 }
 
 type PCG32Fast uint64
@@ -159,7 +159,7 @@ func (s *PCG32Fast) Normal32() float32 {
 
 // Generates number in range [0,1]. Has 32bit resolution
 func (s *PCG32Fast) Normal64() float64 {
-	return float64(s.Next()) / float64(1<<64-1)
+	return float64(s.Next()) / float64(1<<32-1)
 }
 
 type PCG32 uint64
@@ -195,5 +195,5 @@ func (s *PCG32) Normal32() float32 {
 
 // Generates number in range [0,1]. Has 32bit resolution
 func (s *PCG32) Normal64() float64 {
-	return float64(s.Next()) / float64(1<<64-1)
+	return float64(s.Next()) / float64(1<<32-1)
 }
