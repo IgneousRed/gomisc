@@ -91,6 +91,14 @@ func Ternary[T any](b bool, t T, f T) T {
 	return f
 }
 
+// Bool to sign.
+func BToS(value bool) float64 {
+	if value {
+		return 1
+	}
+	return -1
+}
+
 // Bool to int.
 func BToI(value bool) int {
 	if value {
