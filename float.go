@@ -2,9 +2,6 @@ package gomisc
 
 import "math"
 
-type Rad float64
-type Deg float64
-
 // Mathematical constants.
 const (
 	E       = 2.7182818284590452353602874713527
@@ -64,40 +61,14 @@ func PartsToF64(sign bool, exponent uint16, fraction uint64) float64 {
 			LowestBitsU64(fraction, F64Fraction))
 }
 
-// Convert to degrees.
-func (r Rad) Deg() Deg {
-	return Deg(r * Rad2Deg)
-}
-
-// Convert to radians.
-func (r Deg) Rad() Rad {
-	return Rad(r * Deg2Rad)
-}
+// Radian cosine.
+var Cos = math.Cos
 
 // Radian cosine.
-func (r Rad) Cos() float64 {
-	return math.Cos(float64(r))
-}
-
-// Degree cosine.
-func (r Deg) Cos() float64 {
-	return r.Rad().Cos()
-}
-
-// Radian sine.
-func (r Rad) Sin() float64 {
-	return math.Sin(float64(r))
-}
-
-// Degree sine.
-func (r Deg) Sin() float64 {
-	return r.Rad().Sin()
-}
+var Sin = math.Sin
 
 // Origin to point angle.
-func Atan2(y, x float64) Rad {
-	return Rad(math.Atan2(y, x))
-}
+var Atan2 = math.Atan2
 
 // Discards fraction value.
 func Floor(value float64) float64 { // TODO VS math version
