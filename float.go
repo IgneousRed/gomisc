@@ -29,6 +29,18 @@ const F64Sign = 1
 const F64Exponent = 11
 const F64Fraction = 52
 
+// Float32 bits
+var F32ToBits = math.Float32bits
+
+// Float64 bits
+var F64ToBits = math.Float64bits
+
+// Float32 from bits
+var BitsToF32 = math.Float32frombits
+
+// Float64 from bits
+var BitsToF64 = math.Float64frombits
+
 // 1 sign bit, 8 exponent bits and 23 fraction bits.
 func F32ToParts(value float32) (bool, uint8, uint32) {
 	bits := math.Float32bits(value)
@@ -71,7 +83,8 @@ var Sin = math.Sin
 var Atan2 = math.Atan2
 
 // Discards fraction value.
-func Floor(value float64) float64 { // TODO VS math version
+// Casts to int64
+func Floor(value float64) float64 {
 	if value < 0 {
 		return float64(int64(value) - 1)
 	}
@@ -79,7 +92,7 @@ func Floor(value float64) float64 { // TODO VS math version
 }
 
 // Discards fraction value.
-func FloorI(value float64) int { // TODO VS math version
+func FloorI(value float64) int {
 	if value < 0 {
 		return int(value) - 1
 	}
@@ -87,7 +100,8 @@ func FloorI(value float64) int { // TODO VS math version
 }
 
 // Discards fraction value.
-func Round(value float64) float64 { // TODO VS math version
+// Casts to int64
+func Round(value float64) float64 {
 	if value < 0 {
 		return float64(int64(value - .5))
 	}
@@ -95,7 +109,7 @@ func Round(value float64) float64 { // TODO VS math version
 }
 
 // Discards fraction value.
-func RoundI(value float64) int { // TODO VS math version
+func RoundI(value float64) int {
 	if value < 0 {
 		return int(value - .5)
 	}
