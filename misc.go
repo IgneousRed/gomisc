@@ -6,24 +6,38 @@ import (
 	"strconv"
 )
 
+type si = int
+type s8 = int8
+type s16 = int16
+type s32 = int32
+type s64 = int64
+type ui = uint
+type u8 = uint8
+type u16 = uint16
+type u32 = uint32
+type u64 = uint64
+type up = uintptr
+type f32 = float32
+type f64 = float64
+
 type SInt interface {
-	int | int8 | int16 | int32 | int64
+	si | s8 | s16 | s32 | s64
 }
 type UInt interface {
-	uint | uint8 | uint16 | uint32 | uint64 | uintptr
+	ui | u8 | u16 | u32 | u64 | up
 }
 type Int interface {
 	SInt | UInt
 }
 type Float interface {
-	float32 | float64
+	f32 | f64
 }
 type Number interface {
 	Int | Float
 }
 
 // Panic if `err` != nil.
-func PanicErr(err error, desc string) {
+func PanicErr(desc string, err error) {
 	if err != nil {
 		log.Panic(desc, err)
 	}
@@ -37,7 +51,7 @@ func PanicIf(b bool, desc string) {
 }
 
 // Fatal if `err` != nil.
-func FatalErr(err error, desc string) {
+func FatalErr(desc string, err error) {
 	if err != nil {
 		log.Fatal(desc, err)
 	}
@@ -100,7 +114,7 @@ func BToS(value bool) float64 {
 }
 
 // Bool to int.
-func BToI(value bool) int {
+func BToI(value bool) si {
 	if value {
 		return 1
 	}
@@ -130,7 +144,7 @@ func NToB[T Number](value T) bool {
 
 // Int to ascii.
 func IToA[T Int](value T) string {
-	return strconv.Itoa(int(value))
+	return strconv.Itoa(si(value))
 }
 
 // Ascii to int.
@@ -140,7 +154,7 @@ func AToI[T Int](value string) (T, error) {
 }
 
 // Make 2dimentional slice.
-func Make2[T any](a, b int) [][]T {
+func Make2[T any](a, b si) [][]T {
 	result := make([][]T, a)
 	for i := range result {
 		result[i] = make([]T, b)
@@ -149,7 +163,7 @@ func Make2[T any](a, b int) [][]T {
 }
 
 // Number of true in `bools`.
-func CountTrue(bools []bool) int {
+func CountTrue(bools []bool) si {
 	result := 0
 	for _, b := range bools {
 		if b {
@@ -160,7 +174,7 @@ func CountTrue(bools []bool) int {
 }
 
 // Index of the first true inside `bools`.
-func FirstTrueIndex(bools []bool) (index int, ok bool) {
+func FirstTrueIndex(bools []bool) (index si, ok bool) {
 	for i, b := range bools {
 		if b {
 			return i, true
@@ -170,18 +184,18 @@ func FirstTrueIndex(bools []bool) (index int, ok bool) {
 }
 
 // Copy `slice` copy with size `len`.
-func SliceNewCopy[T any](slice []T, len int) []T {
+func SliceNewCopy[T any](slice []T, len si) []T {
 	new := make([]T, len)
 	copy(new, slice)
 	return new
 }
 
 // Copy `slice` with double the size.
-func SliceExpand[T any](slice []T, min int) []T {
+func SliceExpand[T any](slice []T, min si) []T {
 	return SliceNewCopy(slice, Max(len(slice)*2, min))
 }
 
 // Copiy `slice` with half the size.
-func SliceShrink[T any](slice []T, min int) []T {
+func SliceShrink[T any](slice []T, min si) []T {
 	return SliceNewCopy(slice, Max(len(slice)/2, min))
 }

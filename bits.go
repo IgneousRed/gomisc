@@ -1,34 +1,34 @@
 package gomisc
 
 // lowest `n` bits from `value`.
-func LowestBitsU16(value uint16, n uint8) uint16 {
-	return value & uint16(1<<n-1)
+func LowestBitsU16(value u16, n u8) u16 {
+	return value & u16(1<<n-1)
 }
 
 // lowest `n` bits from `value`.
-func LowestBitsU32(value uint32, n uint8) uint32 {
-	return value & uint32(1<<n-1)
+func LowestBitsU32(value u32, n u8) u32 {
+	return value & u32(1<<n-1)
 }
 
 // lowest `n` bits from `value`.
-func LowestBitsU64(value uint64, n uint8) uint64 {
-	return value & uint64(1<<n-1)
+func LowestBitsU64(value u64, n u8) u64 {
+	return value & u64(1<<n-1)
 }
 
-//	func ClearLowestNBits[T UInt](value T, n uint8) T {
+//	func ClearLowestNBits[T UInt](value T, n u8) T {
 //		return value & ^T(1<<n-1)
 //	}
 //
-//	func HighestNBits[T UInt](value T, n uint8) T {
-//		return value >> (uint8(unsafe.Sizeof(value))*8 - n)
+//	func HighestNBits[T UInt](value T, n u8) T {
+//		return value >> (u8(unsafe.Sizeof(value))*8 - n)
 //	}
 
 // Rotate bits in `value` by `n` places.
-func RotateU32(value uint32, n uint8) uint32 {
+func RotateU32(value u32, n u8) u32 {
 	return value<<n | value>>(32-n)
 }
 
 // Rotate bits in `value` by `n` places.
-func RotateU64(value uint64, n uint8) uint64 {
+func RotateU64(value u64, n u8) u64 {
 	return value<<n | value>>(64-n)
 }

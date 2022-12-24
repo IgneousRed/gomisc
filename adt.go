@@ -3,7 +3,7 @@ package gomisc
 // First In, First Out.
 type Queue[T any] struct {
 	slice      []T
-	start, end int
+	start, end si
 }
 
 // Error.
@@ -14,12 +14,12 @@ func (q QueueEmpty) Error() string {
 }
 
 // Wrap on len.
-func (q Queue[T]) wrap(value int) int {
+func (q Queue[T]) wrap(value si) si {
 	return Wrap(value, len(q.slice))
 }
 
 // Elements in Queue.
-func (q Queue[T]) Len() int {
+func (q Queue[T]) Len() si {
 	return q.wrap(q.end - q.start)
 }
 
