@@ -1,8 +1,6 @@
 package gomisc
 
-type Vector2 struct {
-	X, Y f64
-}
+type Vector2 [2]f64
 
 // New Vector2.
 func Vec2(x, y f64) Vector2 {
@@ -11,103 +9,103 @@ func Vec2(x, y f64) Vector2 {
 
 // Are `v` and `other` identical.
 func (v Vector2) Eq(other Vector2) bool {
-	return v.X == other.X && v.Y == other.Y
+	return v[0] == other[0] && v[1] == other[1]
 }
 
 // Changes sign of each `v` element.
 func (v Vector2) Neg() Vector2 {
-	return Vec2(-v.X, -v.Y)
+	return Vec2(-v[0], -v[1])
 }
 
 // Reciprocates each `v` element.
 func (v Vector2) Rcp() Vector2 {
-	return Vec2(1/v.X, 1/v.Y)
+	return Vec2(1/v[0], 1/v[1])
 }
 
 // `v` and `other` pairwise add.
 func (v Vector2) Add(other Vector2) Vector2 {
-	return Vec2(v.X+other.X, v.Y+other.Y)
+	return Vec2(v[0]+other[0], v[1]+other[1])
 }
 
 // Add `other` to each `v` element.
 func (v Vector2) Add1(other f64) Vector2 {
-	return Vec2(v.X+other, v.Y+other)
+	return Vec2(v[0]+other, v[1]+other)
 }
 
 // `v` and `other` pairwise subtract.
 func (v Vector2) Sub(other Vector2) Vector2 {
-	return Vec2(v.X-other.X, v.Y-other.Y)
+	return Vec2(v[0]-other[0], v[1]-other[1])
 }
 
 // Subtract `other` from each `v` element.
 func (v Vector2) Sub1(other f64) Vector2 {
-	return Vec2(v.X-other, v.Y-other)
+	return Vec2(v[0]-other, v[1]-other)
 }
 
 // `v` and `other` pairwise multiply.
 func (v Vector2) Mul(other Vector2) Vector2 {
-	return Vec2(v.X*other.X, v.Y*other.Y)
+	return Vec2(v[0]*other[0], v[1]*other[1])
 }
 
 // Multiply `other` with each `v` element.
 func (v Vector2) Mul1(other f64) Vector2 {
-	return Vec2(v.X*other, v.Y*other)
+	return Vec2(v[0]*other, v[1]*other)
 }
 
 // `v` and `other` pairwise divide.
 func (v Vector2) Div(other Vector2) Vector2 {
-	return Vec2(v.X/other.X, v.Y/other.Y)
+	return Vec2(v[0]/other[0], v[1]/other[1])
 }
 
 // Divide `other` from each `v` element.
 func (v Vector2) Div1(other f64) Vector2 {
-	return Vec2(v.X/other, v.Y/other)
+	return Vec2(v[0]/other, v[1]/other)
 }
 
 // `v` and `other` pairwise wrap.
 func (v Vector2) Wrap(lens Vector2) Vector2 {
-	return Vec2(Wrap(v.X, lens.X), Wrap(v.Y, lens.Y))
+	return Vec2(Wrap(v[0], lens[0]), Wrap(v[1], lens[1]))
 }
 
 // Wrap `len` to each `v` element.
 func (v Vector2) Wrap1(len f64) Vector2 {
-	return Vec2(Wrap(v.X, len), Wrap(v.Y, len))
+	return Vec2(Wrap(v[0], len), Wrap(v[1], len))
 }
 
 // Make `v` elements absolute.
 func (v Vector2) Abs() Vector2 {
-	return Vec2(Abs(v.X), Abs(v.Y))
+	return Vec2(Abs(v[0]), Abs(v[1]))
 }
 
 // Lowest `v` element.
 func (v Vector2) Min() f64 {
-	if v.Y < v.X {
-		return v.Y
+	if v[1] < v[0] {
+		return v[1]
 	}
-	return v.X
+	return v[0]
 }
 
 // Highest `v` element.
 func (v Vector2) Max() f64 {
-	if v.Y > v.X {
-		return v.Y
+	if v[1] > v[0] {
+		return v[1]
 	}
-	return v.X
+	return v[0]
 }
 
 // `v` element Su
 func (v Vector2) Sum() f64 {
-	return v.X + v.Y
+	return v[0] + v[1]
 }
 
 // Floor `v` elements.
 func (v Vector2) Floor() Vector2 {
-	return Vec2(Floor(v.X), Floor(v.Y))
+	return Vec2(Floor(v[0]), Floor(v[1]))
 }
 
 // Round `v` elements.
 func (v Vector2) Round() Vector2 {
-	return Vec2(Round(v.X), Round(v.Y))
+	return Vec2(Round(v[0]), Round(v[1]))
 }
 
 // `v` and `other` linear interpolation.
@@ -184,7 +182,7 @@ func (v Vector2) Reflect(norm Vector2) Vector2 {
 
 // Rotate `v` 90 degrees.
 func (v Vector2) Rot90() Vector2 {
-	return Vec2(-v.Y, v.X)
+	return Vec2(-v[1], v[0])
 }
 
 // Angle to direction.
@@ -194,7 +192,7 @@ func (a Rad) Vec2() Vector2 {
 
 // Direction to angle.
 func (v Vector2) Rad() Rad {
-	return Rad(Atan2(v.Y, v.X))
+	return Rad(Atan2(v[1], v[0]))
 }
 
 // Angle from `v` to `other`.
@@ -205,5 +203,5 @@ func (v Vector2) AngTo(other Vector2) Rad {
 // Rotate `v` with angle `amount`.
 func (v Vector2) Rot(amount Rad) Vector2 {
 	newX := amount.Vec2()
-	return newX.Rot90().Mul1(v.Y).Add(newX.Mul1(v.X))
+	return newX.Rot90().Mul1(v[1]).Add(newX.Mul1(v[0]))
 }
