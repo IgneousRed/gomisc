@@ -109,11 +109,11 @@ func Floor(value f64) f64 {
 }
 
 // Discards fraction value.
-func FloorI(value f64) si {
+func FloorI(value f64) int {
 	if value < 0 {
-		return si(value) - 1
+		return int(value) - 1
 	}
-	return si(value)
+	return int(value)
 }
 
 // Discards fraction value.
@@ -126,11 +126,11 @@ func Round(value f64) f64 {
 }
 
 // Discards fraction value.
-func RoundI(value f64) si {
+func RoundI(value f64) int {
 	if value < 0 {
-		return si(value - .5)
+		return int(value - .5)
 	}
-	return si(value + .5)
+	return int(value + .5)
 }
 
 // Square root.

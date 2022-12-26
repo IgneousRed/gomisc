@@ -112,8 +112,8 @@ func (s *MCG32) Next() u32 {
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *MCG32) Range(n si) si {
-	return si(s.Next() % u32(n))
+func (s *MCG32) Range(n int) int {
+	return int(s.Next() % u32(n))
 }
 
 // Generates number in range [0,1]
@@ -148,8 +148,8 @@ func (s *PCG32Fast) Next() u32 {
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *PCG32Fast) Range(n si) si {
-	return si(s.Next() % u32(n))
+func (s *PCG32Fast) Range(n int) int {
+	return int(s.Next() % u32(n))
 }
 
 // Generates number in range [0,1]
@@ -184,8 +184,8 @@ func (s *PCG32) Next() u32 {
 // Generates number in range [0,n)
 // The larger the n the larger the bias (in general)
 // Usualy in practice it is insignificant
-func (s *PCG32) Range(n si) si {
-	return si(s.Next() % u32(n))
+func (s *PCG32) Range(n int) int {
+	return int(s.Next() % u32(n))
 }
 
 // Generates number in range [0,1]

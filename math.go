@@ -49,7 +49,7 @@ func WithSign[T Number](signFrom, magFrom T) T {
 }
 
 // Sign bit and magnitude.
-func SignBitAndMag[T Number](value T) (signBit si, magnitude T) {
+func SignBitAndMag[T Number](value T) (signBit int, magnitude T) {
 	if value < 0 {
 		return 1, -value
 	}
