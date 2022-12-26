@@ -29,6 +29,23 @@ const F64Sign = 1
 const F64Exponent = 11
 const F64Fraction = 52
 
+type Rad f64
+
+// Angle in degrees.
+func Deg(value f64) Rad {
+	return Rad(value * Deg2Rad)
+}
+
+// Radian cosine.
+func (r Rad) Cos() f64 {
+	return Cos(f64(r))
+}
+
+// Radian sine.
+func (r Rad) Sin() f64 {
+	return Sin(f64(r))
+}
+
 // Float32 bits
 var F32ToBits = math.Float32bits
 

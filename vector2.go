@@ -1,12 +1,11 @@
 package gomisc
 
 type Vector2 struct {
-	X, Y float64
+	X, Y f64
 }
-type Rad float64
 
 // New Vector2.
-func Vec2(x, y float64) Vector2 {
+func Vec2(x, y f64) Vector2 {
 	return Vector2{x, y}
 }
 
@@ -31,7 +30,7 @@ func (v Vector2) Add(other Vector2) Vector2 {
 }
 
 // Add `other` to each `v` element.
-func (v Vector2) Add1(other float64) Vector2 {
+func (v Vector2) Add1(other f64) Vector2 {
 	return Vec2(v.X+other, v.Y+other)
 }
 
@@ -41,7 +40,7 @@ func (v Vector2) Sub(other Vector2) Vector2 {
 }
 
 // Subtract `other` from each `v` element.
-func (v Vector2) Sub1(other float64) Vector2 {
+func (v Vector2) Sub1(other f64) Vector2 {
 	return Vec2(v.X-other, v.Y-other)
 }
 
@@ -51,7 +50,7 @@ func (v Vector2) Mul(other Vector2) Vector2 {
 }
 
 // Multiply `other` with each `v` element.
-func (v Vector2) Mul1(other float64) Vector2 {
+func (v Vector2) Mul1(other f64) Vector2 {
 	return Vec2(v.X*other, v.Y*other)
 }
 
@@ -61,7 +60,7 @@ func (v Vector2) Div(other Vector2) Vector2 {
 }
 
 // Divide `other` from each `v` element.
-func (v Vector2) Div1(other float64) Vector2 {
+func (v Vector2) Div1(other f64) Vector2 {
 	return Vec2(v.X/other, v.Y/other)
 }
 
@@ -71,7 +70,7 @@ func (v Vector2) Wrap(lens Vector2) Vector2 {
 }
 
 // Wrap `len` to each `v` element.
-func (v Vector2) Wrap1(len float64) Vector2 {
+func (v Vector2) Wrap1(len f64) Vector2 {
 	return Vec2(Wrap(v.X, len), Wrap(v.Y, len))
 }
 
@@ -81,7 +80,7 @@ func (v Vector2) Abs() Vector2 {
 }
 
 // Lowest `v` element.
-func (v Vector2) Min() float64 {
+func (v Vector2) Min() f64 {
 	if v.Y < v.X {
 		return v.Y
 	}
@@ -89,7 +88,7 @@ func (v Vector2) Min() float64 {
 }
 
 // Highest `v` element.
-func (v Vector2) Max() float64 {
+func (v Vector2) Max() f64 {
 	if v.Y > v.X {
 		return v.Y
 	}
@@ -97,7 +96,7 @@ func (v Vector2) Max() float64 {
 }
 
 // `v` element Su
-func (v Vector2) Sum() float64 {
+func (v Vector2) Sum() f64 {
 	return v.X + v.Y
 }
 
@@ -112,12 +111,12 @@ func (v Vector2) Round() Vector2 {
 }
 
 // `v` and `other` linear interpolation.
-func (v Vector2) Lerp(other Vector2, t float64) Vector2 {
+func (v Vector2) Lerp(other Vector2, t f64) Vector2 {
 	return other.Sub(v).Mul1(t).Add(v)
 }
 
 // // `v` and `other` inverse linear interpolation.
-// func (v Vec2) LerpInv(other, value Vec2) float64 {
+// func (v Vec2) LerpInv(other, value Vec2) f64 {
 // 	// return value.Sub(v).Div(other.Sub(v))
 
 // 	return Vec2{
@@ -126,22 +125,22 @@ func (v Vector2) Lerp(other Vector2, t float64) Vector2 {
 // }
 
 // `v` and `other` dot product.
-func (v Vector2) Dot(other Vector2) float64 {
+func (v Vector2) Dot(other Vector2) f64 {
 	return v.Mul(other).Sum()
 }
 
 // Magnitude squared.
-func (v Vector2) MagSq() float64 {
+func (v Vector2) MagSq() f64 {
 	return v.Dot(v)
 }
 
 // Magnitude.
-func (v Vector2) Mag() float64 {
+func (v Vector2) Mag() f64 {
 	return Sqrt(v.MagSq())
 }
 
 // `v` direction with `value` magnitude.
-func (v Vector2) MagSet(value float64) Vector2 {
+func (v Vector2) MagSet(value f64) Vector2 {
 	if mag := v.Mag(); mag != 0 {
 		return v.Mul1(value / mag)
 	}
@@ -154,7 +153,7 @@ func (v Vector2) Norm() Vector2 {
 }
 
 // Clamps `v` magnitude.
-func (v Vector2) ClampMag(max float64) Vector2 {
+func (v Vector2) ClampMag(max f64) Vector2 {
 	if v.Mag() > max {
 		return v.MagSet(max)
 	}
@@ -162,12 +161,12 @@ func (v Vector2) ClampMag(max float64) Vector2 {
 }
 
 // Distance between `v` and `other`.
-func (v Vector2) Dst(other Vector2) float64 {
+func (v Vector2) Dst(other Vector2) f64 {
 	return v.Sub(other).Mag()
 }
 
 // Move `v` towards `other` by `dlt`.
-func (v Vector2) MoveTowards(other Vector2, dlt float64) Vector2 {
+func (v Vector2) MoveTowards(other Vector2, dlt f64) Vector2 {
 	return other.Sub(v).MagSet(Min(dlt, v.Dst(other))).Add(v)
 }
 
@@ -177,30 +176,15 @@ func (v Vector2) Project(other Vector2) Vector2 {
 	return v.MagSet(v.Dot(other))
 }
 
-// Rotate `v` 90 degrees.
-func (v Vector2) Rot90() Vector2 {
-	return Vec2(-v.Y, v.X)
-}
-
 // Reflect `v` on normal `norm`.
 // `norm` should be normalized.
 func (v Vector2) Reflect(norm Vector2) Vector2 {
 	return v.Sub(norm.Mul1(v.Dot(norm) * 2))
 }
 
-// Angle in degrees.
-func Deg(value float64) Rad {
-	return Rad(value * Deg2Rad)
-}
-
-// Radian cosine.
-func (r Rad) Cos() float64 {
-	return Cos(float64(r))
-}
-
-// Radian sine.
-func (r Rad) Sin() float64 {
-	return Sin(float64(r))
+// Rotate `v` 90 degrees.
+func (v Vector2) Rot90() Vector2 {
+	return Vec2(-v.Y, v.X)
 }
 
 // Angle to direction.
