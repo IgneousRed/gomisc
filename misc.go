@@ -21,7 +21,7 @@ type SInt interface {
 	int | s8 | s16 | s32 | s64
 }
 type UInt interface {
-	uint | u8 | u16 | u32 | u64 | up
+	uint | u8 | u16 | u32 | u64 | uintptr
 }
 type Int interface {
 	SInt | UInt
