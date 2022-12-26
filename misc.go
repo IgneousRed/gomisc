@@ -106,7 +106,7 @@ func Ternary[T any](b bool, t T, f T) T {
 }
 
 // Bool to sign.
-func BToS(value bool) float64 {
+func BToS(value bool) f64 {
 	if value {
 		return 1
 	}
@@ -121,8 +121,8 @@ func BToI(value bool) si {
 	return 0
 }
 
-// Bool to float64.
-func BToF(value bool) float64 {
+// Bool to f64.
+func BToF(value bool) f64 {
 	if value {
 		return 1
 	}

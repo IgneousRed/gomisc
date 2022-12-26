@@ -4,7 +4,7 @@ import "math"
 
 // Wraps `value` to `len`, even if `value` < 0.
 func Wrap[T Number](value, len T) T {
-	return value - T(Floor(float64(value)/float64(len)))*len
+	return value - T(Floor(f64(value)/f64(len)))*len
 }
 
 // Absolute value (non-negative).
@@ -37,7 +37,7 @@ func IsOutside[T Number](value, min, max T) (T, bool) {
 
 // Power `base` to `exponent`.
 func Pow[T Number](base, exp T) T {
-	return T(math.Pow(float64(base), float64(exp)))
+	return T(math.Pow(f64(base), f64(exp)))
 }
 
 // `magFrom` with `signFrom` sign.

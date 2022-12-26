@@ -42,7 +42,7 @@ var BitsToF32 = math.Float32frombits
 var BitsToF64 = math.Float64frombits
 
 // 1 sign bit, 8 exponent bits and 23 fraction bits.
-func F32ToParts(value float32) (bool, u8, u32) {
+func F32ToParts(value f32) (bool, u8, u32) {
 	bits := math.Float32bits(value)
 	return NToB(bits >> (F32Exponent + F32Fraction)),
 		u8(bits >> F32Fraction),
@@ -50,7 +50,7 @@ func F32ToParts(value float32) (bool, u8, u32) {
 }
 
 // 1 sign bit, 11 exponent bits and 52 fraction bits.
-func F64ToParts(value float64) (bool, u16, u64) {
+func F64ToParts(value f64) (bool, u16, u64) {
 	bits := math.Float64bits(value)
 	return NToB(bits >> (F64Exponent + F64Fraction)),
 		u16(bits >> F64Fraction),
@@ -58,7 +58,7 @@ func F64ToParts(value float64) (bool, u16, u64) {
 }
 
 // 1 sign bit, 8 exponent bits and 23 fraction bits.
-func PartsToF32(sign bool, exponent u8, fraction u32) float32 {
+func PartsToF32(sign bool, exponent u8, fraction u32) f32 {
 	return math.Float32frombits(
 		BToN[u32](sign)<<(F32Exponent+F32Fraction) |
 			u32(exponent)<<F32Fraction |
@@ -66,7 +66,7 @@ func PartsToF32(sign bool, exponent u8, fraction u32) float32 {
 }
 
 // 1 sign bit, 11 exponent bits and 52 fraction bits.
-func PartsToF64(sign bool, exponent u16, fraction u64) float64 {
+func PartsToF64(sign bool, exponent u16, fraction u64) f64 {
 	return math.Float64frombits(
 		BToN[u64](sign)<<(F64Exponent+F64Fraction) |
 			u64(LowestBitsU16(exponent, F64Exponent))<<F64Fraction |
@@ -84,15 +84,15 @@ var Atan2 = math.Atan2
 
 // Discards fraction value.
 // Casts to int64
-func Floor(value float64) float64 {
+func Floor(value f64) f64 {
 	if value < 0 {
-		return float64(s64(value) - 1)
+		return f64(s64(value) - 1)
 	}
-	return float64(s64(value))
+	return f64(s64(value))
 }
 
 // Discards fraction value.
-func FloorI(value float64) si {
+func FloorI(value f64) si {
 	if value < 0 {
 		return si(value) - 1
 	}
@@ -101,15 +101,15 @@ func FloorI(value float64) si {
 
 // Discards fraction value.
 // Casts to int64
-func Round(value float64) float64 {
+func Round(value f64) f64 {
 	if value < 0 {
-		return float64(s64(value - .5))
+		return f64(s64(value - .5))
 	}
-	return float64(s64(value + .5))
+	return f64(s64(value + .5))
 }
 
 // Discards fraction value.
-func RoundI(value float64) si {
+func RoundI(value f64) si {
 	if value < 0 {
 		return si(value - .5)
 	}
@@ -117,21 +117,21 @@ func RoundI(value float64) si {
 }
 
 // Square root.
-func Sqrt(value float64) float64 {
+func Sqrt(value f64) f64 {
 	return math.Sqrt(value)
 }
 
 // Linear interpolation.
-func Lerp(a, b, t float64) float64 {
+func Lerp(a, b, t f64) f64 {
 	return a + (b-a)*t
 }
 
 // Cubic transition.
-func FadeCubic(t float64) float64 {
+func FadeCubic(t f64) f64 {
 	return t * t * (3 - 2*t)
 }
 
 // Quintic transition.
-func FadeQuintic(t float64) float64 {
+func FadeQuintic(t f64) f64 {
 	return t * t * t * (t*(t*6-15) + 10)
 }

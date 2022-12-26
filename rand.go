@@ -117,13 +117,13 @@ func (s *MCG32) Range(n si) si {
 }
 
 // Generates number in range [0,1]
-func (s *MCG32) Normal32() float32 {
-	return float32(s.raw()) / float32(1<<32-1)
+func (s *MCG32) Normal32() f32 {
+	return f32(s.raw()) / f32(1<<32-1)
 }
 
 // Generates number in range [0,1]
-func (s *MCG32) Normal64() float64 {
-	return float64(s.raw()) / float64(1<<32-1)
+func (s *MCG32) Normal64() f64 {
+	return f64(s.raw()) / f64(1<<32-1)
 }
 
 type PCG32Fast u64
@@ -153,13 +153,13 @@ func (s *PCG32Fast) Range(n si) si {
 }
 
 // Generates number in range [0,1]
-func (s *PCG32Fast) Normal32() float32 {
-	return float32(s.Next()) / float32(1<<32-1)
+func (s *PCG32Fast) Normal32() f32 {
+	return f32(s.Next()) / f32(1<<32-1)
 }
 
 // Generates number in range [0,1]. Has 32bit resolution
-func (s *PCG32Fast) Normal64() float64 {
-	return float64(s.Next()) / float64(1<<32-1)
+func (s *PCG32Fast) Normal64() f64 {
+	return f64(s.Next()) / f64(1<<32-1)
 }
 
 type PCG32 u64
@@ -189,11 +189,11 @@ func (s *PCG32) Range(n si) si {
 }
 
 // Generates number in range [0,1]
-func (s *PCG32) Normal32() float32 {
-	return float32(s.Next()) / float32(1<<32-1)
+func (s *PCG32) Normal32() f32 {
+	return f32(s.Next()) / f32(1<<32-1)
 }
 
 // Generates number in range [0,1]. Has 32bit resolution
-func (s *PCG32) Normal64() float64 {
-	return float64(s.Next()) / float64(1<<32-1)
+func (s *PCG32) Normal64() f64 {
+	return f64(s.Next()) / f64(1<<32-1)
 }
