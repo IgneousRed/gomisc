@@ -47,16 +47,16 @@ func (r Rad) Sin() f64 {
 }
 
 // Float32 bits
-var F32ToBits = math.Float32bits
+var F32ToU32 = math.Float32bits
 
 // Float64 bits
-var F64ToBits = math.Float64bits
+var F64ToU64 = math.Float64bits
 
 // Float32 from bits
-var BitsToF32 = math.Float32frombits
+var U32ToF32 = math.Float32frombits
 
 // Float64 from bits
-var BitsToF64 = math.Float64frombits
+var U64ToF64 = math.Float64frombits
 
 // 1 sign bit, 8 exponent bits and 23 fraction bits.
 func F32ToParts(value f32) (bool, u8, u32) {

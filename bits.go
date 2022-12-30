@@ -15,14 +15,6 @@ func LowestBitsU64(value u64, n u8) u64 {
 	return value & u64(1<<n-1)
 }
 
-//	func ClearLowestNBits[T UInt](value T, n u8) T {
-//		return value & ^T(1<<n-1)
-//	}
-//
-//	func HighestNBits[T UInt](value T, n u8) T {
-//		return value >> (u8(unsafe.Sizeof(value))*8 - n)
-//	}
-
 // Rotate bits in `value` by `n` places.
 func RotateU32(value u32, n u8) u32 {
 	return value<<n | value>>(32-n)
