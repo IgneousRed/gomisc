@@ -78,7 +78,11 @@ type Pair[T, U any] struct {
 
 // Merges `ts` and `us` into a slice of pairs.
 func Zip[T, U any](ts []T, us []U) []Pair[T, U] {
-	PanicIf(len(ts) != len(us), fmt.Sprintf("Can't zip slices of different length (%v vs %v)", len(ts), len(us)))
+	PanicIf(len(ts) != len(us),
+		fmt.Sprintf("Can't zip slices of different length (%v vs %v)",
+			len(ts), len(us),
+		),
+	)
 	pairs := make([]Pair[T, U], len(ts))
 	for i := 0; i < len(ts); i++ {
 		pairs[i] = Pair[T, U]{ts[i], us[i]}

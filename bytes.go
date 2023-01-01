@@ -59,14 +59,12 @@ func F64ToU8s(value f64) []u8 {
 
 // u16 from 2 bytes
 func U8sToU16(bytes []u8) u16 {
-	_ = bytes[1] // bounds check hint to compiler; see golang.org/issue/14808
 	return u16(bytes[0]) |
 		u16(bytes[1])<<8
 }
 
 // u32 from 4 bytes
 func U8sToU32(bytes []u8) u32 {
-	_ = bytes[3] // bounds check hint to compiler; see golang.org/issue/14808
 	return u32(bytes[0]) |
 		u32(bytes[1])<<8 |
 		u32(bytes[2])<<16 |
@@ -75,7 +73,6 @@ func U8sToU32(bytes []u8) u32 {
 
 // u64 from 8 bytes
 func U8sToU64(bytes []u8) u64 {
-	_ = bytes[7] // bounds check hint to compiler; see golang.org/issue/14808
 	return u64(bytes[0]) |
 		u64(bytes[1])<<8 |
 		u64(bytes[2])<<16 |
