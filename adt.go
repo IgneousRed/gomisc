@@ -27,8 +27,7 @@ func (q Queue[T]) Len() int {
 func (q Queue[T]) Slice() []T {
 	if q.end < q.start {
 		result := make([]T, q.Len())
-		len := copy(result, q.slice[q.start:])
-		copy(result[len:], q.slice[:q.end])
+		copy(result[copy(result, q.slice[q.start:]):], q.slice[:q.end])
 		return result
 	}
 	return q.slice[q.start:q.end]
@@ -37,12 +36,10 @@ func (q Queue[T]) Slice() []T {
 // Put an element at the end.
 func (q *Queue[T]) Push(value T) error {
 	if q.wrap(q.start-q.end) <= 1 {
+		q.start, q.end = 0, q.Len()
 		q.slice = SliceExpand(q.Slice(), 4)
-		q.end = q.Len()
-		q.start = 0
 	}
-	q.slice[q.end] = value
-	q.end = q.wrap(q.end + 1)
+	q.slice[q.end], q.end = value, q.wrap(q.end+1)
 	return nil
 }
 
@@ -70,11 +67,10 @@ func (q *Queue[T]) Pop() (T, error) {
 		var result T
 		return result, QueueEmpty("Queue empty")
 	} else if q.Len() < len(q.slice)/3 {
+		q.start, q.end = 0, q.Len()
 		q.slice = SliceShrink(q.Slice(), 4)
-		q.end = q.Len()
-		q.start = 0
 	}
-	result := q.slice[q.start]
+	result := q.slice[q.start] // TODO: Merge lines
 	q.start = q.wrap(q.start + 1)
 	return result, nil
 }
