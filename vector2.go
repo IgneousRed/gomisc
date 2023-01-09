@@ -98,6 +98,11 @@ func (v Vector2) Sum() f64 {
 	return v[0] + v[1]
 }
 
+// Sign `v` elements.
+func (v Vector2) Sign() Vector2 {
+	return Vec2(Sign(v[0]), Sign(v[1]))
+}
+
 // Floor `v` elements.
 func (v Vector2) Floor() Vector2 {
 	return Vec2(Floor(v[0]), Floor(v[1]))
