@@ -108,6 +108,11 @@ func (v Vector2) Round() Vector2 {
 	return Vec2(Round(v[0]), Round(v[1]))
 }
 
+// Swaps x and y
+func (v Vector2) ReverseOrder() Vector2 {
+	return Vec2(v[1], v[0])
+}
+
 // `v` and `other` linear interpolation.
 func (v Vector2) Lerp(other Vector2, t f64) Vector2 {
 	return other.Sub(v).Mul1(t).Add(v)
