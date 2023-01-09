@@ -99,6 +99,14 @@ var Sin = math.Sin
 // Origin to point angle.
 var Atan2 = math.Atan2
 
+// Sign of `num`
+func Sign[T Float](num T) T {
+	if num < 0 {
+		return -1
+	}
+	return 1
+}
+
 // Discards fraction value.
 // Casts to int64
 func Floor(value f64) f64 {
